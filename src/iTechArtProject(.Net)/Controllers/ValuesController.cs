@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace iTechArtProject_.Net_.Controllers
 {
@@ -25,8 +28,30 @@ namespace iTechArtProject_.Net_.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post()
         {
+            var username = Request.Form["username"];
+            var password = Request.Form["password"];
+
+            var user = new { name = "admin", pass = "admin" };
+
+            if (username != user.name || password != user.pass)
+            {
+                return BadRequest();
+            }
+
+            var token = new JwtSecurityToken(
+                issuer: "iTechArt_Lab",
+                expires: DateTime.UtcNow.AddMinutes(10),
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("123456789987654321ITAL")), SecurityAlgorithms.HmacSha256)
+            ); ;
+
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                expiration = token.ValidTo,
+                serverTimeUtcNow= DateTime.UtcNow
+            });
         }
 
         // PUT api/values/5

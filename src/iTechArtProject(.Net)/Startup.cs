@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace iTechArtProject_.Net_
 {
@@ -49,6 +51,21 @@ namespace iTechArtProject_.Net_
             app.UseApplicationInsightsRequestTelemetry();
 
             app.UseApplicationInsightsExceptionTelemetry();
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                TokenValidationParameters = new TokenValidationParameters
+                {
+                    
+                    ValidateIssuer = true, // укзывает, будет ли валидироваться издатель при валидации токена
+                    ValidIssuer = "iTechArt_Lab", // строка, представляющая издателя
+                    ValidateLifetime = true,// будет ли валидироваться время существования
+                    ValidateIssuerSigningKey = true, // валидация ключа безопасности
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("123456789987654321ITAL")),// установка ключа безопасности
+                    //ClockSkew = TimeSpan.Zero
+                }
+            });
 
             app.UseMvc();
         }
