@@ -13,6 +13,7 @@ namespace iTechArtProject_.Net_.Model
 
         public static string AddUser(APIContext db, User user, Role role)
         {
+            if(db.Users.Count(s => s.Email == user.Email)!=0) throw new Exception("User already exist");
             var newUser = new User {
                 Name = user.Name,
                 SurName = user.SurName,

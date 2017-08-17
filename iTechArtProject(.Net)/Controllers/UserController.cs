@@ -8,6 +8,8 @@ using Models;
 using iTechArtProject_.Net_.Model;
 using iTechArtProject_.Net_.Filters;
 using iTechArtProject_.Net_.Context;
+using Microsoft.EntityFrameworkCore;
+using System.Collections;
 
 namespace iTechArtProject_.Net_.Controllers
 {
@@ -19,19 +21,14 @@ namespace iTechArtProject_.Net_.Controllers
         public UserController(APIContext context)
         {
             this._db = context;
-            if (!_db.Roles.Any())
-            {
-                _db.Roles.AddRange(new Role { Name = "admin" }, new Role { Name = "user" });
-                _db.SaveChanges();
-            }
+            
         }
         // GET: api/User
         [AuthenticationFilter]
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IEnumerable Get()
         {
-            User user =(User)HttpContext.Items["User"];
-            return _db.Users.ToList();
+            return _db.Users.Include(s => s.Role).Where(s => s.Role.Name != "admin").Select(s => new { id = s.Id, name = s.Name + " " + s.SurName }).ToList<dynamic>();
         }
 
         // GET: api/User/5
@@ -40,15 +37,21 @@ namespace iTechArtProject_.Net_.Controllers
         {
             return "value";
         }
-
         // POST: api/User
         [HttpPost]
         public IActionResult Post([FromBody]User user)
         {
-            var role = RoleExpansion.GetDefaulRole(_db);
-            var token = UserExpansion.AddUser(_db, user, role);
-            Response.Cookies.Append("token", token);
-            return CreatedAtRoute("Get",new { id=1}, user);
+            try
+            {
+                var role = RoleExpansion.GetDefaulRole(_db);
+                var token = UserExpansion.AddUser(_db, user, role);
+                Response.Cookies.Append("token", token);
+                return CreatedAtRoute("Get", new { id = 1 }, user);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
         }
         [HttpPut]
         public IActionResult GetToken([FromBody]User user)
@@ -74,8 +77,9 @@ namespace iTechArtProject_.Net_.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            return NotFound();
         }
        
         

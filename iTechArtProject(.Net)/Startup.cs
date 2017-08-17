@@ -31,7 +31,7 @@ namespace iTechArtProject_.Net_
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddDbContext<APIContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
         }
@@ -70,6 +70,8 @@ namespace iTechArtProject_.Net_
             });
 
             app.UseMvc();
+
+            DbInitializer.Initialize(db);
         }
     }
 }
