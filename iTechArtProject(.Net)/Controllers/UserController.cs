@@ -28,7 +28,7 @@ namespace iTechArtProject_.Net_.Controllers
         [HttpGet]
         public IEnumerable Get()
         {
-            return _db.Users.Include(s => s.Role).Where(s => s.Role.Name != "admin").Select(s => new { id = s.Id, name = s.Name + " " + s.SurName }).ToList<dynamic>();
+            return UserExpansion.GetAllUser(_db);
         }
 
         // GET: api/User/5

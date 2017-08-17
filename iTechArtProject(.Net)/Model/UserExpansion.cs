@@ -1,9 +1,9 @@
 ﻿using iTechArtProject_.Net_.Context;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace iTechArtProject_.Net_.Model
 {
@@ -34,6 +34,15 @@ namespace iTechArtProject_.Net_.Model
 
             db.SaveChanges();
             return token;
+        }
+        public static IEnumerable GetAllUser(APIContext db)
+        {
+            var users= db.Users.Include(s => s.Role).Where(s => s.Role.Name != "admin");
+            return UsersToFormat(users);
+        }
+        private static IEnumerable UsersToFormat(IQueryable<User> users)
+        {
+            return users.Select(s => new { id = s.Id, name = s.Name + " " + s.SurName }).ToList<dynamic>();
         }
     }
 
