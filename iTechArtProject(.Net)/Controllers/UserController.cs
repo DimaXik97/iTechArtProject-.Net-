@@ -25,6 +25,7 @@ namespace iTechArtProject_.Net_.Controllers
         }
         // GET: api/User
         [AuthenticationFilter]
+        [AuthorizationFilter("admin")]
         [HttpGet]
         public IEnumerable Get()
         {

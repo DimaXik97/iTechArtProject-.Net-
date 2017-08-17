@@ -12,7 +12,7 @@ namespace iTechArtProject_.Net_.Filters
         {
             if(context.HttpContext.Items.ContainsKey("Errors"))
             {
-                context.Result = new ContentResult { StatusCode = 401, Content = context.HttpContext.Items["Errors"].ToString() };
+                context.Result = new JsonResult(new { message=context.HttpContext.Items["Errors"]}) { StatusCode = 401};
             }
         }
     }
