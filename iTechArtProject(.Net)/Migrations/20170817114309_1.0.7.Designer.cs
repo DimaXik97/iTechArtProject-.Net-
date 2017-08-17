@@ -8,9 +8,10 @@ using iTechArtProject_.Net_.Context;
 namespace iTechArtProject.Net.Migrations
 {
     [DbContext(typeof(APIContext))]
-    partial class APIContextModelSnapshot : ModelSnapshot
+    [Migration("20170817114309_1.0.7")]
+    partial class _107
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

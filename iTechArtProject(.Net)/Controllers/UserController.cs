@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using iTechArtProject_.Net_.Model;
 using iTechArtProject_.Net_.Filters;
-using Microsoft.EntityFrameworkCore;
 using iTechArtProject_.Net_.Context;
 
 namespace iTechArtProject_.Net_.Controllers
@@ -45,10 +45,24 @@ namespace iTechArtProject_.Net_.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]User user)
         {
-            var role = getDefaulRole();
-            var token = addUser(user, role);
+            var role = RoleExpansion.GetDefaulRole(_db);
+            var token = UserExpansion.AddUser(_db, user, role);
             Response.Cookies.Append("token", token);
-            return CreatedAtRoute("Get", user);
+            return CreatedAtRoute("Get",new { id=1}, user);
+        }
+        [HttpPut]
+        public IActionResult GetToken([FromBody]User user)
+        {
+            try
+            {
+                var token = TokenExpansion.GetToken(_db, user.Email, user.Password);
+                Response.Cookies.Append("token", token);
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { message=e.Message});
+            }
         }
 
         // PUT: api/User/5
@@ -63,23 +77,7 @@ namespace iTechArtProject_.Net_.Controllers
         public void Delete(int id)
         {
         }
-        private Role getDefaulRole()
-        {
-            return _db.Roles.Single(s => s.Name == "user");
-        }
-        private string generateToken(User user)
-        {
-            return user.Name + user.Email + DateTime.Now.Ticks;
-        }
-        private string addUser(User user, Role role)
-        {
-            var newUser = new User { Name = user.Name, SurName = user.SurName, Email = user.Email, Password = user.Password, Role = role };
-            _db.Users.Add(newUser);
-            string token = generateToken(user);
-            _db.Tokens.Add(new Token { Name = token, User = newUser, Expired = DateTime.Now.AddDays(1) });
-            _db.SaveChanges();
-            return token;
-        }
+       
         
     }
 }
