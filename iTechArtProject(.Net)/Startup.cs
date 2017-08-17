@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using iTechArtProject_.Net_.Context;
 
 namespace iTechArtProject_.Net_
 {
@@ -46,13 +47,13 @@ namespace iTechArtProject_.Net_
             {
                 try
                 {
-                    var valueCookie = context.Request.Cookies["token"];
-                    var token = db.Tokens.Include(p => p.User).Include(p=>p.User.Role).FirstOrDefault(s => s.NameToken == valueCookie);
+                    var cookieValue = context.Request.Cookies["token"];
+                    var token = db.Tokens.Include(p => p.User).Include(p=>p.User.Role).FirstOrDefault(s => s.Name == cookieValue);
                     if (token == null)
                     {
                         context.Items["Errors"] = "Missing a token or wrong it";
                     }
-                    else if(token.Expired<DateTime.Now)
+                    else if(token.Expired < DateTime.Now)
                     {
                         context.Items["Errors"] = "Token expired";
                     }

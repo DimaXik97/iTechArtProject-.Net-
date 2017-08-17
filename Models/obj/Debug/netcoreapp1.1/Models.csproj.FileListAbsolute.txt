@@ -1,8 +1,0 @@
-D:\ITechArtProject\iTechArtProject(.Net)\Models\bin\Debug\netcoreapp1.1\Models.deps.json
-D:\ITechArtProject\iTechArtProject(.Net)\Models\bin\Debug\netcoreapp1.1\Models.dll
-D:\ITechArtProject\iTechArtProject(.Net)\Models\obj\Debug\netcoreapp1.1\Models.csprojResolveAssemblyReference.cache
-D:\ITechArtProject\iTechArtProject(.Net)\Models\obj\Debug\netcoreapp1.1\Models.csproj.CoreCompileInputs.cache
-D:\ITechArtProject\iTechArtProject(.Net)\Models\obj\Debug\netcoreapp1.1\Models.AssemblyInfo.cs
-D:\ITechArtProject\iTechArtProject(.Net)\Models\bin\Debug\netcoreapp1.1\Models.pdb
-D:\ITechArtProject\iTechArtProject(.Net)\Models\obj\Debug\netcoreapp1.1\Models.dll
-D:\ITechArtProject\iTechArtProject(.Net)\Models\obj\Debug\netcoreapp1.1\Models.pdb

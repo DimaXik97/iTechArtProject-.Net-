@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models;
 using iTechArtProject_.Net_.Filters;
 using Microsoft.EntityFrameworkCore;
+using iTechArtProject_.Net_.Context;
 
 namespace iTechArtProject_.Net_.Controllers
 {
@@ -47,13 +48,14 @@ namespace iTechArtProject_.Net_.Controllers
             var role = getDefaulRole();
             var token = addUser(user, role);
             Response.Cookies.Append("token", token);
-            return Created("ff",user);
+            return CreatedAtRoute("Get", user);
         }
 
         // PUT: api/User/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
+
         }
 
         // DELETE: api/ApiWithActions/5
@@ -74,7 +76,7 @@ namespace iTechArtProject_.Net_.Controllers
             var newUser = new User { Name = user.Name, SurName = user.SurName, Email = user.Email, Password = user.Password, Role = role };
             _db.Users.Add(newUser);
             string token = generateToken(user);
-            _db.Tokens.Add(new Token { NameToken = token, User = newUser, Expired = DateTime.Now.AddDays(1) });
+            _db.Tokens.Add(new Token { Name = token, User = newUser, Expired = DateTime.Now.AddDays(1) });
             _db.SaveChanges();
             return token;
         }

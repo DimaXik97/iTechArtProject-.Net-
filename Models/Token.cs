@@ -7,7 +7,7 @@ namespace Models
     public class Token
     {
         public int Id { get; set; }
-        public string NameToken { get; set; }
+        public string Name { get; set; }
         public DateTime Expired { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }

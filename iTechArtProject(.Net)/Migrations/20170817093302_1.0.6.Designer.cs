@@ -8,8 +8,8 @@ using iTechArtProject_.Net_.Context;
 namespace iTechArtProject.Net.Migrations
 {
     [DbContext(typeof(APIContext))]
-    [Migration("20170816124330_1.0.5")]
-    partial class _105
+    [Migration("20170817093302_1.0.6")]
+    partial class _106
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -17,7 +17,7 @@ namespace iTechArtProject.Net.Migrations
                 .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("iTechArtProject_.Net_.Models.Role", b =>
+            modelBuilder.Entity("Models.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -29,14 +29,14 @@ namespace iTechArtProject.Net.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("iTechArtProject_.Net_.Models.Token", b =>
+            modelBuilder.Entity("Models.Token", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Expired");
 
-                    b.Property<string>("NameToken");
+                    b.Property<string>("Name");
 
                     b.Property<int>("UserId");
 
@@ -48,7 +48,7 @@ namespace iTechArtProject.Net.Migrations
                     b.ToTable("Tokens");
                 });
 
-            modelBuilder.Entity("iTechArtProject_.Net_.Models.User", b =>
+            modelBuilder.Entity("Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -70,17 +70,17 @@ namespace iTechArtProject.Net.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("iTechArtProject_.Net_.Models.Token", b =>
+            modelBuilder.Entity("Models.Token", b =>
                 {
-                    b.HasOne("iTechArtProject_.Net_.Models.User", "User")
+                    b.HasOne("Models.User", "User")
                         .WithOne("Token")
-                        .HasForeignKey("iTechArtProject_.Net_.Models.Token", "UserId")
+                        .HasForeignKey("Models.Token", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("iTechArtProject_.Net_.Models.User", b =>
+            modelBuilder.Entity("Models.User", b =>
                 {
-                    b.HasOne("iTechArtProject_.Net_.Models.Role", "Role")
+                    b.HasOne("Models.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);

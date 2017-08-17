@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
+using Models;
 
-namespace Models
+namespace iTechArtProject_.Net_.Context
 {
     public class APIContext : DbContext
     {
