@@ -19,6 +19,7 @@ namespace iTechArtProject_.Net_.Model
             Token token = db.Tokens.Include(p => p.User).SingleOrDefault(p => p.User.Email == email);
             if (token == null) throw new Exception("Error Email");
             else if (token.User.Password != pass) throw new Exception("Error password");
+            else if (token.User.IsBan) throw new Exception("You banned");
             else
             {
                 ChangeExpired(token);

@@ -18,7 +18,7 @@ namespace iTechArtProject_.Net_.Filters
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var user = context.HttpContext.Items["User"] as User;
-            if (user==null) context.Result = new JsonResult(new { message = "Unknown error" }) { StatusCode = 401 }; 
+            if (user==null) context.Result = new JsonResult(new { message = "Unknown error" }) { StatusCode = 400 }; 
             else if(user.Role.Name!=_role) context.Result = new JsonResult(new { message = "Insufficient rights" }) { StatusCode = 403 };
         }
     }

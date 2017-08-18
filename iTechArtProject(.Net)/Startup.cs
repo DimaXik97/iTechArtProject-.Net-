@@ -8,8 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using Models;
 using iTechArtProject_.Net_.Context;
+using Models;
 
 namespace iTechArtProject_.Net_
 {
@@ -53,13 +53,15 @@ namespace iTechArtProject_.Net_
                     {
                         context.Items["Errors"] = "Missing a token or wrong it";
                     }
-                    else if(token.Expired < DateTime.Now)
-                    {
-                        context.Items["Errors"] = "Token expired";
-                    }
                     else
                     {
-                        context.Items["User"] = token.User;
+                        db.Entry(token).Reload();
+                        if (token.Expired < DateTime.Now)
+                            context.Items["Errors"] = "Token expired";
+                        else
+                        {
+                            context.Items["User"] = token.User;
+                        }
                     }
                 }
 

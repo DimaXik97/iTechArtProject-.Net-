@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace iTechArtProject_.Net_.Context
@@ -11,5 +12,10 @@ namespace iTechArtProject_.Net_.Context
         public APIContext(DbContextOptions<APIContext> options)
             : base(options)
         { }
+
+        internal object Entry<T>(Token token)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

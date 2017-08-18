@@ -8,7 +8,6 @@ using Models;
 using iTechArtProject_.Net_.Model;
 using iTechArtProject_.Net_.Filters;
 using iTechArtProject_.Net_.Context;
-using Microsoft.EntityFrameworkCore;
 using System.Collections;
 
 namespace iTechArtProject_.Net_.Controllers
@@ -21,12 +20,11 @@ namespace iTechArtProject_.Net_.Controllers
         public UserController(APIContext context)
         {
             this._db = context;
-            
         }
         // GET: api/User
+        [HttpGet]
         [AuthenticationFilter]
         [AuthorizationFilter("admin")]
-        [HttpGet]
         public IEnumerable Get()
         {
             return UserExpansion.GetAllUser(_db);
@@ -34,9 +32,17 @@ namespace iTechArtProject_.Net_.Controllers
 
         // GET: api/User/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            try
+            {
+                return Ok(UserExpansion.GetUser(_db, id, HttpContext.Items["User"] as User));
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            
         }
         // POST: api/User
         [HttpPost]
@@ -69,11 +75,20 @@ namespace iTechArtProject_.Net_.Controllers
             }
         }
 
-        // PUT: api/User/5
+        // PUT: api/User/id
+        [AuthenticationFilter]
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody]User user)
         {
-
+            try
+            {
+                UserExpansion.ChangeUser(_db, id, user, HttpContext.Items["User"] as User);
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
         }
 
         // DELETE: api/ApiWithActions/5
