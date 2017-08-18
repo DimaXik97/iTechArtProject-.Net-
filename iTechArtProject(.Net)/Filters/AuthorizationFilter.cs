@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace iTechArtProject_.Net_.Filters
 {
-    public class AuthorizationFilter : Attribute, IAuthorizationFilter
+    class AuthorizationFilter : Attribute, IAuthorizationFilter
     {
         string _role;
         public AuthorizationFilter(string role)

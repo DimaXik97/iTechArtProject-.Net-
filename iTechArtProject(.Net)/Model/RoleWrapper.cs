@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace iTechArtProject_.Net_.Model
 {
-    static class RoleExpansion
+    static class RoleWrapper
     {
         private static string _defaultRole="user";
 

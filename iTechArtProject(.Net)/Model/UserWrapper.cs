@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace iTechArtProject_.Net_.Model
 {
-    static class UserExpansion
+    static class UserWrapper
     {
         private static string _defaultPhoto = "/img/default_photo.png";
 
-        public static string AddUser(APIContext db, User user, Role role)
+        public static User AddUser(APIContext db, User user, Role role)
         {
             if(db.Users.Count(s => s.Email == user.Email)!=0) throw new Exception("User already exist");
             var newUser = new User {
@@ -24,32 +24,35 @@ namespace iTechArtProject_.Net_.Model
                 Role = role
             };
             db.Users.Add(newUser);
-
-            string token = TokenExpansion.GenerateToken(user);
-            db.Tokens.Add(new Token {
-                Name = token,
-                User = newUser,
-                Expired = DateTime.Now.AddDays(1)
-            });
-
             db.SaveChanges();
-            return token;
+            return newUser;
         }
 
-        public static IEnumerable GetAllUser(APIContext db)
+        public static IEnumerable GetAllUsers(APIContext db, params string[] rolesNotInclude)
         {
-            var users= db.Users.Include(s => s.Role).Where(s => s.Role.Name != "admin");
+            var users= db.Users.Include(s => s.Role).Where(s => IsInclude(s.Role.Name, rolesNotInclude));
             return UsersToFormat(users);
         }
-
+        private static bool IsInclude(string role, string[] rolesNotInclude)
+        {
+            bool isInclude = true;
+            foreach (var element in rolesNotInclude)
+            {
+                if (role == element)
+                {
+                    isInclude = false;
+                }
+            }
+            return isInclude;
+        }
         private static IEnumerable UsersToFormat(IQueryable<User> users)
         {
             return users.Select(s => new { id = s.Id, name = s.Name + " " + s.SurName }).ToList<dynamic>();
         }
 
-        public static dynamic GetUser(APIContext db, int id, User authUser)
+        public static dynamic GetUser(APIContext db, int id, User currentUser)
         {
-            if (id != authUser.Id && authUser.Role.Name != "admin") throw new Exception("Insufficient rights");
+            if (id != currentUser.Id && currentUser.Role.Name != "admin") throw new Exception("Insufficient rights");
             var user = db.Users.SingleOrDefault(s=>s.Id==id);
             if(user==null) throw new Exception("User not found");
             return UserToFormat(user);
@@ -60,25 +63,25 @@ namespace iTechArtProject_.Net_.Model
             return new { name = user.Name, surName = user.SurName, photo =user.Photo, isBan=user.IsBan};
         }
 
-        public static void ChangeUser(APIContext db, int id, User dataChange, User authUser)
+        public static void UpdateUser(APIContext db, int id, User dataChange, User currentUser)
         {
             var user=db.Users.Include(s=>s.Token).SingleOrDefault(s => s.Id == id);
             if (user == null) throw new Exception("User not found");
             else if (dataChange.IsBan != user.IsBan)
             {
-                ChangeIsBan(user, authUser.Role.Name, dataChange.IsBan);
+                ChangeIsBan(user, currentUser.Role.Name, dataChange.IsBan);
             }
             else if (dataChange.Name != null && dataChange.SurName != null)
             {
-                ChangeUserName(user, dataChange.Name, dataChange.SurName, authUser.Id);
+                ChangeUserName(user, dataChange.Name, dataChange.SurName, currentUser.Id);
             }
             else if (dataChange.Photo != null)
             {
-                ChangePhoto(user, dataChange.Photo, authUser.Id);
+                ChangePhoto(user, dataChange.Photo, currentUser.Id);
             }
             else if (dataChange.Password != null)
             {
-                ChangePassword(user, dataChange.Password, authUser.Id);
+                ChangePassword(user, dataChange.Password, currentUser.Id);
             }
             else throw new Exception("Error data");
             db.SaveChanges();

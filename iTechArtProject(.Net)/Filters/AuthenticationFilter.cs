@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace iTechArtProject_.Net_.Filters
 {
-    public class AuthenticationFilter : Attribute, IAuthorizationFilter
+    class AuthenticationFilter : Attribute, IAuthorizationFilter
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {

@@ -27,7 +27,7 @@ namespace iTechArtProject_.Net_.Controllers
         [AuthorizationFilter("admin")]
         public IEnumerable Get()
         {
-            return UserExpansion.GetAllUser(_db);
+            return UserWrapper.GetAllUsers(_db,"admin");
         }
 
         // GET: api/User/5
@@ -36,7 +36,7 @@ namespace iTechArtProject_.Net_.Controllers
         {
             try
             {
-                return Ok(UserExpansion.GetUser(_db, id, HttpContext.Items["User"] as User));
+                return Ok(UserWrapper.GetUser(_db, id, HttpContext.Items["User"] as User));
             }
             catch(Exception e)
             {
@@ -50,10 +50,11 @@ namespace iTechArtProject_.Net_.Controllers
         {
             try
             {
-                var role = RoleExpansion.GetDefaulRole(_db);
-                var token = UserExpansion.AddUser(_db, user, role);
+                var role = RoleWrapper.GetDefaulRole(_db);
+                var newUser = UserWrapper.AddUser(_db, user, role);
+                var token = TokenWrapper.AddToken(_db, newUser);
                 Response.Cookies.Append("token", token);
-                return CreatedAtRoute("Get", new { id = 1 }, user);
+                return CreatedAtRoute("Get", new { id = newUser.Id }, new { id=newUser.Id, name=newUser.Name, surName=newUser.SurName, email=newUser.Email});
             }
             catch(Exception e)
             {
@@ -65,7 +66,7 @@ namespace iTechArtProject_.Net_.Controllers
         {
             try
             {
-                var token = TokenExpansion.GetToken(_db, user.Email, user.Password);
+                var token = TokenWrapper.GetToken(_db, user.Email, user.Password);
                 Response.Cookies.Append("token", token);
                 return Ok();
             }
@@ -82,7 +83,7 @@ namespace iTechArtProject_.Net_.Controllers
         {
             try
             {
-                UserExpansion.ChangeUser(_db, id, user, HttpContext.Items["User"] as User);
+                UserWrapper.UpdateUser(_db, id, user, HttpContext.Items["User"] as User);
                 return Ok();
             }
             catch(Exception e)

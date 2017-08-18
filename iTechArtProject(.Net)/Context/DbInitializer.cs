@@ -7,7 +7,7 @@ using iTechArtProject_.Net_.Model;
 
 namespace iTechArtProject_.Net_.Context
 {
-    public static class DbInitializer
+    static class DbInitializer
     {
         public static void Initialize(APIContext db)
         {
@@ -19,7 +19,7 @@ namespace iTechArtProject_.Net_.Context
             if(db.Users.Count(s=>s.Name=="admin")==0)
             {
                 var role=db.Roles.Single(s => s.Name == "admin");
-                UserExpansion.AddUser(db, new User { Name = "admin", SurName = "admin", Email = "admin", Password = "admin" }, role);
+                UserWrapper.AddUser(db, new User { Name = "admin", SurName = "admin", Email = "admin", Password = "admin" }, role);
                 db.SaveChanges();
             }
         }
