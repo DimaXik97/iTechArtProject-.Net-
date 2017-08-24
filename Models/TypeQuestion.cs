@@ -4,8 +4,5 @@ using System.Text;
 
 namespace Models
 {
-    class TypeQuestion
-    {
-        enum Question { Text, Checkbox, Radiobutton }
-    }
+    public enum TypeQuestion { Text=1, Checkbox, Radiobutton }
 }

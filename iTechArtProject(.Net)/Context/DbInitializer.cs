@@ -19,7 +19,8 @@ namespace iTechArtProject_.Net_.Context
             if(db.Users.Count(s=>s.Name=="admin")==0)
             {
                 var role=db.Roles.Single(s => s.Name == "admin");
-                UserWrapper.AddUser(db, new User { Name = "admin", SurName = "admin", Email = "admin", Password = "admin" }, role);
+                var newUser = UserWrapper.AddUser(db, new User { Name = "admin", SurName = "admin", Email = "admin", Password = "admin" }, role);
+                TokenWrapper.AddToken(db, newUser);
                 db.SaveChanges();
             }
         }

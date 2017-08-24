@@ -9,8 +9,10 @@ namespace Models
         public int Id { get; set; }
         public string Name{ get; set; }
         public bool IsReady { get; set; }
-        public int TypeQuestion { get; set; }
+        public int SortOrder { get; set; }
+        public TypeQuestion TypeQuestion{ get; set; }
 
-        /*public List<Вариант ответов> Варианты ответов { get; set; }*/
+        public Test Test { get; set; }
+        public List<Option> Options { get; set; }
     } 
 }

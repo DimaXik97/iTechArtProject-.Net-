@@ -19,7 +19,7 @@ namespace iTechArtProject_.Net_.Model
                 SurName = user.SurName,
                 Email = user.Email,
                 Password = user.Password,
-                Photo = user.Photo ?? _defaultPhoto,
+                PhotoSrc = user.PhotoSrc ?? _defaultPhoto,
                 IsBan = false,
                 Role = role
             };
@@ -60,7 +60,7 @@ namespace iTechArtProject_.Net_.Model
 
         private static dynamic UserToFormat(User user)
         {
-            return new { name = user.Name, surName = user.SurName, photo =user.Photo, isBan=user.IsBan};
+            return new { name = user.Name, surName = user.SurName, photo =user.PhotoSrc, isBan=user.IsBan};
         }
 
         public static void UpdateUser(APIContext db, int id, User dataChange, User currentUser)
@@ -75,9 +75,9 @@ namespace iTechArtProject_.Net_.Model
             {
                 ChangeUserName(user, dataChange.Name, dataChange.SurName, currentUser.Id);
             }
-            else if (dataChange.Photo != null)
+            else if (dataChange.PhotoSrc != null)
             {
-                ChangePhoto(user, dataChange.Photo, currentUser.Id);
+                ChangePhoto(user, dataChange.PhotoSrc, currentUser.Id);
             }
             else if (dataChange.Password != null)
             {
@@ -99,7 +99,7 @@ namespace iTechArtProject_.Net_.Model
 
         private static void ChangePhoto(User user, string photo, int userId)
         {
-            if (user.Id == userId) user.Photo = photo;
+            if (user.Id == userId) user.PhotoSrc = photo;
             else throw new Exception("Insufficient rights");
         }
 

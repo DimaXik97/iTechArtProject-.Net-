@@ -9,9 +9,10 @@ using Models;
 namespace iTechArtProject.Net.Migrations
 {
     [DbContext(typeof(APIContext))]
-    partial class APIContextModelSnapshot : ModelSnapshot
+    [Migration("20170823175223_1.0.1")]
+    partial class _101
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -26,8 +27,6 @@ namespace iTechArtProject.Net.Migrations
 
                     b.Property<int?>("UserId");
 
-                    b.Property<int?>("UserTestId");
-
                     b.Property<string>("Value");
 
                     b.HasKey("Id");
@@ -35,8 +34,6 @@ namespace iTechArtProject.Net.Migrations
                     b.HasIndex("QuestionId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserTestId");
 
                     b.ToTable("Answers");
                 });
@@ -239,10 +236,6 @@ namespace iTechArtProject.Net.Migrations
                     b.HasOne("Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-
-                    b.HasOne("Models.UserTest", "UserTest")
-                        .WithMany("Answers")
-                        .HasForeignKey("UserTestId");
                 });
 
             modelBuilder.Entity("Models.Option", b =>

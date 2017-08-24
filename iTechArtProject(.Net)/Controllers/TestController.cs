@@ -3,42 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using iTechArtProject_.Net_.Context;
+using iTechArtProject_.Net_.Model;
+using Models;
+using iTechArtProject_.Net_.Filters;
+using System.Collections;
 
 namespace iTechArtProject_.Net_.Controllers
 {
-    [Route("api/[controller]")]
+    [Produces("application/json")]
+    [Route("api/Test/{idCategory}")]
+    [AuthenticationFilter]
     public class TestController : Controller
     {
-        // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        APIContext _db;
+        public TestController(APIContext context)
         {
-            return new string[] { "value1", "value2" };
+            this._db = context;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        //GET
+        [HttpGet(Name = "Test")]
+        public IEnumerable Get(int idCategory)
         {
-            return "value";
+            return TestWrapper.GetTest(_db, idCategory, HttpContext.Items["User"] as User);
         }
 
-        // POST api/values
+        //POST
+        [AuthorizationFilter("admin")]
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post(int idCategory, [FromBody]Test tets)
         {
+            var newTest = TestWrapper.AddTest(_db, idCategory, tets);
+            return CreatedAtRoute("Test", new { name = newTest.Name, isReady = newTest.IsReady, creationDate = newTest.CreationDate });
         }
 
-        // PUT api/values/5
+        //PUT
+        [AuthorizationFilter("admin")]
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, int idCategory, [FromBody]Test test)
         {
+            TestWrapper.UpdateTest(_db, id, idCategory, test);  
         }
 
-        // DELETE api/values/5
+        //DELETE
+        [AuthorizationFilter("admin")]
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(int id, int idCategory)
         {
+            TestWrapper.DeleteTest(_db, id, idCategory);
         }
     }
 }
