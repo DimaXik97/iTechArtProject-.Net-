@@ -1,0 +1,443 @@
+html,
+body {
+  border: 0;
+  font-family: "Helvetica-Neue", "Helvetica", Arial, sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+div,
+span,
+object,
+iframe,
+img,
+table,
+caption,
+thead,
+tbody,
+tfoot,
+tr,
+tr,
+td,
+article,
+aside,
+canvas,
+details,
+figure,
+hgroup,
+menu,
+nav,
+footer,
+header,
+section,
+summary,
+mark,
+audio,
+video {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+address,
+cit,
+code,
+del,
+dfn,
+em,
+ins,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+b,
+i,
+hr,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+legend,
+label {
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+}
+article,
+aside,
+canvas,
+figure,
+figure img,
+figcaption,
+hgroup,
+footer,
+header,
+nav,
+section,
+audio,
+video {
+  display: block;
+}
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+table caption,
+table th,
+table td {
+  text-align: left;
+  vertical-align: middle;
+}
+a img {
+  border: 0;
+}
+:focus {
+  outline: 0;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+body {
+  width: 1024px;
+  margin: auto;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  color: #414141;
+  background: #f4f4f4;
+}
+.body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+header {
+  justify-content: space-between;
+  padding: 10px 0px 10px;
+}
+header .menuItem {
+  padding-left: 10px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+header .menuItem:hover {
+  color: #eb1c23;
+}
+header .logo {
+  width: 150px;
+}
+main {
+  flex: 1;
+  background: #FFF;
+}
+footer {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  color: #737373;
+  background: #333;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.content-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.contentBody {
+  padding: 20px;
+  overflow: hidden;
+  border: 1px solid #eb1c23;
+  border-radius: 0 0 5px 5px;
+}
+.element {
+  position: relative;
+  width: 25%;
+  height: 256px;
+  font-size: 25px;
+  color: #eb1c23;
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+.element:hover {
+  text-decoration: underline;
+  color: #FFF;
+  background: #eb1c23;
+}
+.element .isReady {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  height: 20px;
+  width: 20px;
+}
+.title {
+  padding: 5px 0px 5px 10px;
+  border: 1px solid #eb1c23;
+  border-radius: 5px 5px 0 0;
+  color: #FFF;
+  background-color: #eb1c23;
+}
+.default-btm {
+  margin-bottom: 10px;
+  height: 30px;
+  min-width: 120px;
+  border: 1px solid #eb1c23;
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #FFF;
+  background: #eb1c23;
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+.default-btm:hover {
+  color: #eb1c23;
+  background: #FFF;
+}
+.adminMenu:hover {
+  text-decoration: none;
+}
+.authentication {
+  width: 300px;
+  margin: 150px auto;
+}
+.authentication .default-btm {
+  margin-top: 10px;
+}
+.authentication fieldset {
+  border: none;
+}
+.aboutPage .menu .element-menu {
+  width: 33.33333333%;
+  height: 30px;
+  font-size: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #FFF;
+  background: #eb1c23;
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+.aboutPage .menu .element-menu a {
+  width: 100%;
+  height: 100%;
+}
+.aboutPage .menu .element-menu:hover {
+  color: #eb1c23;
+  background: #FFF;
+}
+.aboutPage .content {
+  width: 100%;
+}
+.aboutPage .contacts {
+  width: 624px;
+}
+.aboutPage .contacts h2 {
+  margin: 10px 0px 10px 10px;
+}
+.aboutPage .contacts li {
+  padding-left: 10px;
+  list-style: square inside;
+}
+.aboutPage .contacts p {
+  padding-left: 10px;
+}
+.aboutPage img {
+  float: left;
+  margin: 0px 15px 15px 0px;
+  width: 250px;
+  height: 200px;
+}
+.question .incorrectAnswer {
+  color: red;
+}
+.question .correctAnswer {
+  color: green;
+}
+.question .userAnswer {
+  font-weight: 700;
+}
+.question input[type="radio"],
+.question input[type="checkbox"] {
+  cursor: pointer;
+}
+.question textarea {
+  padding: 12px 10px;
+  border: 1px solid #dcdcdc;
+  resize: vertical;
+}
+.userStatistics {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.userStatistics .item {
+  width: 341.33333333px;
+  min-height: 100px;
+  height: auto;
+  padding-top: 10px;
+}
+.userStatistics .value {
+  font-size: 50px;
+  color: #eb1c23;
+}
+.userInfo {
+  position: relative;
+}
+.userInfo .userName {
+  font-size: 50px;
+}
+.userInfo .profileMenu {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+}
+.userInfo img {
+  width: 320px;
+  height: 300px;
+}
+fieldset {
+  padding: 20px;
+  border: 1px solid #eb1c23;
+  border-radius: 0 0 5px 5px;
+  background: #FFF;
+}
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 238px;
+  padding: 12px 10px;
+  border: 1px solid #dcdcdc;
+  color: #eb1c23;
+}
+li {
+  list-style-type: none;
+}
+.edit:after {
+  cursor: pointer;
+  content: "\270E";
+}
+.delete:after {
+  cursor: pointer;
+  content: "\2716";
+}
+.add:after {
+  cursor: pointer;
+  content: "\271A";
+}
+#map {
+  width: 400px;
+  height: 400px;
+}
+@media only screen and (max-width: 1023px) {
+  body {
+    width: 768px;
+    font-size: 20px;
+  }
+  .element {
+    width: 33.33333333%;
+    height: 256px;
+  }
+  .userInfo .userName {
+    width: 448px;
+  }
+  .userInfo .profileMenu {
+    position: relative;
+    width: 100%;
+  }
+  .aboutPage .contacts {
+    width: 100%;
+  }
+  .userStatistics .item {
+    width: 50%;
+  }
+  .authentication {
+    margin: auto;
+  }
+  input[type="text"] {
+    width: 85%;
+  }
+  #map {
+    margin: auto;
+    order: 1;
+  }
+}
+@media only screen and (max-width: 767px) {
+  body {
+    width: 480px;
+  }
+  header {
+    justify-content: flex-end;
+  }
+  header .menu {
+    justify-content: flex-end;
+    width: 330px;
+  }
+  .element {
+    width: 50%;
+  }
+  .userInfo {
+    flex-direction: column;
+  }
+  .userInfo .userName {
+    width: auto;
+  }
+}
+@media only screen and (max-width: 479px) {
+  body {
+    width: 320px;
+  }
+  header {
+    justify-content: flex-start;
+  }
+  header .menu {
+    width: auto;
+  }
+  .userStatistics .item {
+    width: 100%;
+  }
+  .element {
+    width: 320px;
+    min-height: 100px;
+    height: auto;
+  }
+  .question textarea {
+    width: 250px;
+  }
+  .aboutPage .menu {
+    flex-direction: column;
+  }
+  .aboutPage .menu .element-menu {
+    width: 320px;
+  }
+  .aboutPage .content {
+    text-align: justify;
+  }
+  .aboutPage img {
+    display: none;
+  }
+}
