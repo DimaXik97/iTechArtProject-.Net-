@@ -1,4 +1,5 @@
 ﻿using iTechArtProject_.Net_.Context;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
@@ -19,13 +20,20 @@ namespace iTechArtProject_.Net_.Model
                 SurName = user.SurName,
                 Email = user.Email,
                 Password = user.Password,
-                PhotoSrc = user.PhotoSrc ?? _defaultPhoto,
+                PhotoSrc = _defaultPhoto,
                 IsBan = false,
                 Role = role
             };
             db.Users.Add(newUser);
             db.SaveChanges();
             return newUser;
+        }
+        public static void SetCookies(IResponseCookies cookies, User user, string token)
+        {
+            cookies.Append("token", token);
+            cookies.Append("role", user.Role.Name);
+            cookies.Append("userId", user.Id.ToString());
+            cookies.Append("username", String.Format("{0} {1}.", user.SurName, user.Name.Substring(1)));
         }
 
         public static IEnumerable GetAllUsers(APIContext db, params string[] rolesNotInclude)

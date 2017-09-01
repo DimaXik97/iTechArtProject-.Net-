@@ -26,9 +26,9 @@ namespace iTechArtProject_.Net_.Model
             db.SaveChanges();
             return token;
         }
-        public static string GetToken(APIContext db, string email, string pass)
+        public static Token GetToken(APIContext db, string email, string pass)
         {
-            Token token = db.Tokens.Include(p => p.User).SingleOrDefault(p => p.User.Email == email);
+            Token token = db.Tokens.Include(p => p.User).ThenInclude(p=>p.Role).SingleOrDefault(p => p.User.Email == email);
             if (token == null) throw new Exception("Error Email");
             else if (token.User.Password != pass) throw new Exception("Error password");
             else if (token.User.IsBan) throw new Exception("You banned");
@@ -36,7 +36,7 @@ namespace iTechArtProject_.Net_.Model
             {
                 SetExpirationTime(token);
                 db.SaveChanges();
-                return token.Name;
+                return token;
             }
         }
         private static void SetExpirationTime(Token token)

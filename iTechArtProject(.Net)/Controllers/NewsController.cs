@@ -23,9 +23,9 @@ namespace iTechArtProject_.Net_.Controllers
         }
         // GET: api/News
         [HttpGet(Name ="News")]
-        public IEnumerable Get()
+        public async Task<IEnumerable> Get()
         {
-            return NewsWrapper.GetNews(_db);
+            return await NewsWrapper.GetNews(_db);
         }
 
         // POST: api/News

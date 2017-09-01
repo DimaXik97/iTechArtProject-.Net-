@@ -25,10 +25,10 @@ namespace iTechArtProject_.Net_.Model
             db.SaveChanges();
             return newNews;
         }
-        public static IEnumerable GetNews(APIContext db)
+        public static async Task<IEnumerable> GetNews(APIContext db)
         {
-            var news = db.News;
-            return NewsToFormat(news);
+            var news = await db.News.ToListAsync();
+            return  NewsToFormat(news);
         }
         private static IEnumerable NewsToFormat(IEnumerable<News> news)
         {

@@ -1,4 +1,5 @@
 ﻿using iTechArtProject_.Net_.Context;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections;
@@ -22,9 +23,9 @@ namespace iTechArtProject_.Net_.Model
             db.SaveChanges();
             return newVacancy;
         }
-        public static IEnumerable GetVacancies(APIContext db)
+        public static async Task<IEnumerable> GetVacancies(APIContext db)
         {
-            var vacancies = db.Vacancies;
+            var vacancies = await db.Vacancies.ToListAsync();
             return NewsToFormat(vacancies);
         }
         private static IEnumerable NewsToFormat(IEnumerable<Vacancy> vacancy)

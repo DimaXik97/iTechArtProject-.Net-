@@ -42,7 +42,6 @@ namespace iTechArtProject_.Net_.Controllers
             {
                 return BadRequest(new { message = e.Message });
             }
-            
         }
         // POST: api/User
         [HttpPost]
@@ -53,7 +52,7 @@ namespace iTechArtProject_.Net_.Controllers
                 var role = RoleWrapper.GetDefaulRole(_db);
                 var newUser = UserWrapper.AddUser(_db, user, role);
                 var token = TokenWrapper.AddToken(_db, newUser);
-                Response.Cookies.Append("token", token);
+                UserWrapper.SetCookies(Response.Cookies, newUser, token);
                 return CreatedAtRoute("Get", new { id = newUser.Id }, new { id=newUser.Id, name=newUser.Name, surName=newUser.SurName, email=newUser.Email});
             }
             catch(Exception e)
@@ -67,7 +66,7 @@ namespace iTechArtProject_.Net_.Controllers
             try
             {
                 var token = TokenWrapper.GetToken(_db, user.Email, user.Password);
-                Response.Cookies.Append("token", token);
+                UserWrapper.SetCookies(Response.Cookies, token.User, token.Name);
                 return Ok();
             }
             catch(Exception e)

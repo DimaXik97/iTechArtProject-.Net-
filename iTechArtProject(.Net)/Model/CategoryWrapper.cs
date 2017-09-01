@@ -21,7 +21,7 @@ namespace iTechArtProject_.Net_.Model
         }
         public static Category NewCategory(APIContext db, Category category)
         {
-            if (category != null) throw new Exception("Error object request");
+            if (category == null) throw new Exception("Error object request");
             var newCategory = new Category
             {
                 Name = category.Name??"NewCategory",

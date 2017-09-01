@@ -33,7 +33,7 @@ namespace iTechArtProject_.Net_.Model
             var category = db.Categories.Include(s=>s.Tests).SingleOrDefault(s => s.Id == idCategory);
             if (category==null) throw new Exception("Error category");
             var sortOrder = category.Tests.Count==0 ? 1 : category.Tests.Max(s => s.SortOrder)+1;
-            if (test != null) throw new Exception("Error object request");
+            if (test == null) throw new Exception("Error object request");
             var newTest = new Test
             {
                 Name = test.Name ?? "NewTest",
