@@ -43,14 +43,23 @@ const tests = (state =initState, action) => {
             tests: state.tests.filter(element => element.id !== action.id)
         }); 
     }
-    case 'CHANGE_TEST':{
+    case 'CHANGE_ISREADY_TEST':{
         return Object.assign({}, state, {
-                tests: state.tests.map(element => {
+            tests: state.tests.map(element => {
                 if(element.id==action.id) 
-                    element.isReady=(!element.isReady);
+                    element.isReady=action.isReady;
                 return element
             })
-        }); 
+        });
+    }
+    case 'CHANGE_NAME_TEST':{
+        return Object.assign({}, state, {
+            tests: state.tests.map(element => {
+                if(element.id==action.id) 
+                    element.name=action.name;
+                return element
+            })
+        });
     }
     default:
       return state

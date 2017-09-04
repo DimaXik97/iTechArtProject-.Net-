@@ -7,6 +7,8 @@ constructor(props) {
   super(props);
   this.addElement = this.addElement.bind(this);
   this.deleteElement = this.deleteElement.bind(this);
+  this.changeIsReadyElement = this.changeIsReadyElement.bind(this);
+  this.changeNameElement = this.changeNameElement.bind(this);
 }
 componentDidMount(){
   this.props.init(this.props.match.params.category);
@@ -16,6 +18,12 @@ addElement(){
 }
 deleteElement(id){
   this.props.deleteTest(this.props.match.params.category, id)
+}
+changeIsReadyElement(id, data){
+  this.props.changeIsReadyTest(this.props.match.params.category, id, data);
+}
+changeNameElement(id, data){
+  this.props.changeNameTest(this.props.match.params.category, id, data);
 }
 render(){
   let isAdmin = window.location.pathname.indexOf("/admin/")==0;
@@ -33,7 +41,7 @@ render(){
           isAdmin={isAdmin}
           addElement={this.addElement}
           deleteElement={this.deleteElement}
-          changeCheckBox={this.props.changeTest}
+          changeCheckBox={this.changeIsReadyElement}
         />
     </main>
   );

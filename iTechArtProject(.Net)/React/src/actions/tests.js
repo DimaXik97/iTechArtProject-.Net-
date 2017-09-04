@@ -2,16 +2,17 @@ export const getTests =(id)=>({
     type: 'GET_TESTS',
     idCategory: id
 })
-export const postTests =(id)=>({
+export const postTest =(id)=>({
     type: 'POST_TESTS',
     idCategory: id
 })
-export const putTests =(id, idTest)=>({
+export const putTest =(id, idTest, data)=>({
     type: 'PUT_TESTS',
     idCategory: id,
-    idTest: idTest
+    idTest: idTest,
+    data: data
 })
-export const deleteTests =(idCategory, idTest)=>({
+export const deleteTest =(idCategory, idTest)=>({
     type: 'DELETE_TESTS',
     idCategory: idCategory,
     idTest: idTest

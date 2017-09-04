@@ -1,5 +1,5 @@
 import { put, takeEvery,call } from 'redux-saga/effects';
-import { clearTests, addTests, removeTest,addTest} from '../actions';
+import { clearTests, addTests, removeTest, addTest, сhangeNameTest, changeIsReadyTest} from '../actions';
 import { getData, postData, putData, deleteData } from './../helpers';
 const url="/api/test/";
 
@@ -24,15 +24,16 @@ export function* add(action) {
 
 }
 export function* change(action) {
-    /*const isUpdate=yield call(putData, `${url}/${action.id}`, action.data);
+    console.log(action);
+    const isUpdate=yield call(putData, `${url}${action.idCategory}/${action.idTest}`, action.data);
     if(isUpdate){
         if(action.data.isReady!=undefined){
-            yield put(сhangeIsReadyCategory(action.id, action.data.isReady));
+            yield put(changeIsReadyTest(action.idTest, action.data.isReady));
         }
         else if(action.data.name){
-            yield put(сhangeNameCategory(action.id, action.data.name));
+            yield put(сhangeNameTest(action.idTest, action.data.name));
         }
-    }*/
+    }
 }
 
 export default function* rootSaga() {

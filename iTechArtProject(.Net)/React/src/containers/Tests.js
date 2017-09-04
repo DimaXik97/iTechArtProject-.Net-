@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import {sort} from '../helpers'
-import {getTests,postTests,deleteTests,changeOrderFieldTest,changeOrder} from '../actions';
+import {getTests,postTest,deleteTest,changeOrderFieldTest,changeOrder, putTest} from '../actions';
 
 import Tests from '../components/Tests/index.jsx';
 
@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(getTests(id))
   },
   addTest: (id)=>{
-    dispatch(postTests(id))
+    dispatch(postTest(id))
   },
   sort:(order)=>{
     dispatch(changeOrder(order));
@@ -24,11 +24,14 @@ const mapDispatchToProps = dispatch => ({
     dispatch(changeOrderFieldTest(field));
   },
   deleteTest: (idCategory, idTest)=>{
-    dispatch(deleteTests(idCategory, idTest))
+    dispatch(deleteTest(idCategory, idTest))
   },
-  changeTest:(id)=>
+  changeIsReadyTest:(idCategory, idTest, data)=>{
+    dispatch(putTest(idCategory, idTest, {isReady:data}))
+  },
+  changeNameTest:(idCategory, idTest, data)=>
   {
-    dispatch(changeOrderFieldTest(id))
+    dispatch(putTest(idCategory, idTest, {name: data}))
   }
 })
 export default connect(
