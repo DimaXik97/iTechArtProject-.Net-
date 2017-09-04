@@ -11,11 +11,11 @@ namespace iTechArtProject_.Net_.Model
 {
     static class QuestionWrapper
     {
-        public static IEnumerable GetQuestions(APIContext db,int idTest, int idCategory)
+        public static IEnumerable GetQuestions(APIContext db,int idTest, int idCategory, User currentUser)
         {
             var test = TestWrapper.GetTestByParams(db, idTest, idCategory);
             var questions = db.Questions.Include(s => s.Options).Include(s=>s.Test).Where(s => s.Test == test);
-            return QuestionsToFormat(questions);
+            return QuestionsToFormat(currentUser.Role.Name == "user" ? questions.Where(s=>s.IsReady): questions);
         }
         private static IEnumerable QuestionsToFormat(IQueryable<Question> question)
         {
@@ -78,7 +78,7 @@ namespace iTechArtProject_.Net_.Model
         }
         public static Question GetQuestionByParams(APIContext db, int QuestionId, Test test)
         {
-            var question = db.Questions.SingleOrDefault(s => s.SortOrder == QuestionId && s.Test == test);
+            var question = db.Questions.Include(s=>s.Options).SingleOrDefault(s => s.SortOrder == QuestionId && s.Test == test);
             if(question==null) new Exception("Error question");
             return question;
         }

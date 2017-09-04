@@ -1,9 +1,11 @@
-export const getAnswers= (param,id)=>({
+export const getAnswers= (stringParam)=>({
     type: 'GET_ANSWERS',
-    param: param,
-    id: id
+    stringParam: stringParam
 })
-export const initAnswers= (answers)=>({
-    type: 'INIT_ANSWERS',
+export const addAnswers= (answers)=>({
+    type: 'ADD_ANSWERS',
     answers: answers
+})
+export const clearAnswers= ()=>({
+    type: 'CLEAR_ANSWERS'
 })

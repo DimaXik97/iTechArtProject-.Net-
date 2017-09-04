@@ -30,8 +30,11 @@
 ]*/
 const answer = (state = [], action) => {
     switch(action.type){
-        case "INIT_ANSWERS":{
-            return action.answers
+        case "ADD_ANSWERS":{
+            return [...state,...action.answers]
+        }
+        case "CLEAR_ANSWERS":{
+            return []
         }
     }
     return state;

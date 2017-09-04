@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import {addQuestion, deleteQuestion, changeQuestion, getQuestions,getAnswers} from '../actions';
+import {getAllQuestions,postQuestion, deleteQuestion, putQuestion} from '../actions';
 
 import Questions from '../components/Questions/index.jsx';
 
@@ -9,17 +9,20 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => ({
     init:(idCategory, idTest, param)=>{
-        dispatch(getQuestions(idCategory,idTest))
-        dispatch(getAnswers(param, idTest))
+        dispatch(getAllQuestions(idCategory,idTest))
+        /*dispatch(getAnswers(param, idTest))*/
     },
-    addQuestion: ()=>{
-        dispatch(addQuestion())
+    addQuestion: (idCategory, idTest, typeQuestion)=>{
+        dispatch(postQuestion(idCategory, idTest, {typeQuestion}))
     },
-    changeQuestion: (id)=>{
-        dispatch(changeQuestion(id))
+    deleteQuestion:(idCategory,idTest,id)=>{
+        dispatch(deleteQuestion(idCategory,idTest,id))
     },
-    deleteQuestion:(id)=>{
-        dispatch(deleteQuestion(id))
+    changeIsReadyQuestion: (idCategory,idTest,id, data)=>{
+        dispatch(putQuestion(idCategory,idTest,id,{isReady: data}));
+    },
+    changeNameQuestion: (idCategory,idTest,id, data)=>{
+        dispatch(putQuestion(idCategory,idTest,id, {name: data}));
     }
 })
 

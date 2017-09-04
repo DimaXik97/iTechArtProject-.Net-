@@ -39776,6 +39776,9 @@ exports.default = news;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 /*const initState=[
     {
         id: "1",
@@ -39811,9 +39814,13 @@ var answer = function answer() {
     var action = arguments[1];
 
     switch (action.type) {
-        case "INIT_ANSWERS":
+        case "ADD_ANSWERS":
             {
-                return action.answers;
+                return [].concat(_toConsumableArray(state), _toConsumableArray(action.answers));
+            }
+        case "CLEAR_ANSWERS":
+            {
+                return [];
             }
     }
     return state;
@@ -39869,32 +39876,36 @@ var questions = function questions() {
     var action = arguments[1];
 
     switch (action.type) {
-        case 'INIT_QUESTIONS':
+        case 'CLEAR_QUESTIONS':
             {
-                return action.questions;
+                return [];
+            }
+        case 'ADD_QUESTIONS':
+            {
+                return [].concat(_toConsumableArray(state), _toConsumableArray(action.questions));
             }
         case 'ADD_QUESTION':
             {
-                return [].concat(_toConsumableArray(state), [{
-                    id: action.id,
-                    type: action.typeQuestions,
-                    isReady: action.isReady,
-                    question: action.question,
-                    answers: action.answers
-                }]);
+                return [].concat(_toConsumableArray(state), [action.question]);
             }
-        case "DELETE_QUESTION":
+        case 'REMOVE_QUESTION':
             {
                 return state.filter(function (element) {
-                    return element.id !== action.id;
+                    return element.id != action.id;
                 });
             }
-        case "CHANGE_QUESTION":
+        case 'CHANGE_NAME_QUESTION':
             {
                 return state.map(function (element) {
-                    if (element.id == action.id) {
-                        element.isReady = !element.isReady;
-                    };return element;
+                    if (element.id == action.idQuestion) element.name = action.name;
+                    return element;
+                });
+            }
+        case 'CHANGE_ISREADY_QUESTION':
+            {
+                return state.map(function (element) {
+                    if (element.id == action.idQuestion) element.isReady = action.isReady;
+                    return element;
                 });
             }
         default:
@@ -40114,6 +40125,14 @@ var _test = __webpack_require__(663);
 
 var _test2 = _interopRequireDefault(_test);
 
+var _question = __webpack_require__(715);
+
+var _question2 = _interopRequireDefault(_question);
+
+var _answer = __webpack_require__(716);
+
+var _answer2 = _interopRequireDefault(_answer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _marked = /*#__PURE__*/regeneratorRuntime.mark(rootSaga);
@@ -40233,6 +40252,14 @@ function rootSaga() {
           return (0, _effects.fork)(_test2.default);
 
         case 10:
+          _context.next = 12;
+          return (0, _effects.fork)(_question2.default);
+
+        case 12:
+          _context.next = 14;
+          return (0, _effects.fork)(_answer2.default);
+
+        case 14:
         case 'end':
           return _context.stop();
       }
@@ -40603,40 +40630,99 @@ var clearTests = exports.clearTests = function clearTests() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var idNew = 4;
-var initQuestions = exports.initQuestions = function initQuestions(questions) {
-    return {
-        type: 'INIT_QUESTIONS',
-        questions: questions
-    };
-};
-var getQuestions = exports.getQuestions = function getQuestions(idCategory, idTest) {
-    return {
-        type: 'GET_QUESTIONS',
+/*export const initQuestions =(questions)=>({
+    type: 'INIT_QUESTIONS',
+    questions: questions
+})
+export const getQuestions =(idCategory,idTest)=>({
+    type: 'GET_QUESTIONS',
+    idCategory: idCategory,
+    idTest: idTest
+})
+export const addQuestion = ()=>({
+    type: 'ADD_QUESTION',
+    id: ++idNew,
+    isReady: false,
+    typeQuestions: 2,
+    question: `New ${idNew} Questions!`,
+    answers: [ "Первый ответ", "Второй ответ", "Третий ответ","Четвертый ответ"] 
+})
+export const deleteQuestion= (id)=>({
+    type: 'DELETE_QUESTION',
+    id: id
+})
+export const changeQuestion= (id)=>({
+    type: 'CHANGE_QUESTION',
+    id: id
+})*/
+var getAllQuestions = exports.getAllQuestions = function getAllQuestions(idCategory, idTest) {
+    return { //+
+        type: "GET_QUESTIONS",
         idCategory: idCategory,
         idTest: idTest
     };
 };
-var addQuestion = exports.addQuestion = function addQuestion() {
+var postQuestion = exports.postQuestion = function postQuestion(idCategory, idTest, data) {
+    return { //+
+        type: "POST_QUESTION",
+        idCategory: idCategory,
+        idTest: idTest,
+        data: data
+    };
+};
+var putQuestion = exports.putQuestion = function putQuestion(idCategory, idTest, id, data) {
+    return {
+        type: "PUT_QUESTION",
+        idCategory: idCategory,
+        idTest: idTest,
+        idQuestion: id,
+        data: data
+    };
+};
+var deleteQuestion = exports.deleteQuestion = function deleteQuestion(idCategory, idTest, id) {
+    return { //+
+        type: "DELETE_QUESTION",
+        idCategory: idCategory,
+        idTest: idTest,
+        idQuestion: id
+    };
+};
+
+var addQuestions = exports.addQuestions = function addQuestions(questions) {
+    return {
+        type: 'ADD_QUESTIONS',
+        questions: questions
+    };
+};
+var addQuestion = exports.addQuestion = function addQuestion(question) {
     return {
         type: 'ADD_QUESTION',
-        id: ++idNew,
-        isReady: false,
-        typeQuestions: 2,
-        question: 'New ' + idNew + ' Questions!',
-        answers: ["Первый ответ", "Второй ответ", "Третий ответ", "Четвертый ответ"]
+        question: question
     };
 };
-var deleteQuestion = exports.deleteQuestion = function deleteQuestion(id) {
-    return {
-        type: 'DELETE_QUESTION',
+var clearQuestions = exports.clearQuestions = function clearQuestions() {
+    return { //+
+        type: 'CLEAR_QUESTIONS'
+    };
+};
+var removeQuestion = exports.removeQuestion = function removeQuestion(id) {
+    return { //+
+        type: 'REMOVE_QUESTION',
         id: id
     };
 };
-var changeQuestion = exports.changeQuestion = function changeQuestion(id) {
-    return {
-        type: 'CHANGE_QUESTION',
-        id: id
+var changeIsReadyQuestion = exports.changeIsReadyQuestion = function changeIsReadyQuestion(id, isReady) {
+    return { //+
+        type: 'CHANGE_ISREADY_QUESTION',
+        idQuestion: id,
+        isReady: isReady
+    };
+};
+var changeNameQuestion = exports.changeNameQuestion = function changeNameQuestion(id, name) {
+    return { //+
+        type: 'CHANGE_NAME_QUESTION',
+        idQuestion: id,
+        name: name
     };
 };
 
@@ -40724,17 +40810,21 @@ var changeOrderFieldUsers = exports.changeOrderFieldUsers = function changeOrder
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var getAnswers = exports.getAnswers = function getAnswers(param, id) {
+var getAnswers = exports.getAnswers = function getAnswers(stringParam) {
     return {
         type: 'GET_ANSWERS',
-        param: param,
-        id: id
+        stringParam: stringParam
     };
 };
-var initAnswers = exports.initAnswers = function initAnswers(answers) {
+var addAnswers = exports.addAnswers = function addAnswers(answers) {
     return {
-        type: 'INIT_ANSWERS',
+        type: 'ADD_ANSWERS',
         answers: answers
+    };
+};
+var clearAnswers = exports.clearAnswers = function clearAnswers() {
+    return {
+        type: 'CLEAR_ANSWERS'
     };
 };
 
@@ -45631,10 +45721,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
-        init: function init(id, param) {
+        init: function init(id, stringParam) {
             dispatch((0, _actions.getUser)(id));
             dispatch((0, _actions.getStatistics)(id));
-            dispatch((0, _actions.getAnswers)(param, id));
+            dispatch((0, _actions.getAnswers)(stringParam));
         }
     };
 };
@@ -45699,7 +45789,12 @@ var User = function (_React$Component) {
   _createClass(User, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.props.init(this.props.match.params.id ? this.props.match.params.id : this.props.userId, "user");
+      this.props.init(this.props.match.params.id ? this.props.match.params.id : this.props.userId, this.getParamsString());
+    }
+  }, {
+    key: "getParamsString",
+    value: function getParamsString() {
+      return "?user=" + (this.props.match.params.id ? this.props.match.params.id : this.props.userId);
     }
   }, {
     key: "render",
@@ -46257,17 +46352,20 @@ var mapStateToProps = function mapStateToProps(state) {
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
         init: function init(idCategory, idTest, param) {
-            dispatch((0, _actions.getQuestions)(idCategory, idTest));
-            dispatch((0, _actions.getAnswers)(param, idTest));
+            dispatch((0, _actions.getAllQuestions)(idCategory, idTest));
+            /*dispatch(getAnswers(param, idTest))*/
         },
-        addQuestion: function addQuestion() {
-            dispatch((0, _actions.addQuestion)());
+        addQuestion: function addQuestion(idCategory, idTest, typeQuestion) {
+            dispatch((0, _actions.postQuestion)(idCategory, idTest, { typeQuestion: typeQuestion }));
         },
-        changeQuestion: function changeQuestion(id) {
-            dispatch((0, _actions.changeQuestion)(id));
+        deleteQuestion: function deleteQuestion(idCategory, idTest, id) {
+            dispatch((0, _actions.deleteQuestion)(idCategory, idTest, id));
         },
-        deleteQuestion: function deleteQuestion(id) {
-            dispatch((0, _actions.deleteQuestion)(id));
+        changeIsReadyQuestion: function changeIsReadyQuestion(idCategory, idTest, id, data) {
+            dispatch((0, _actions.putQuestion)(idCategory, idTest, id, { isReady: data }));
+        },
+        changeNameQuestion: function changeNameQuestion(idCategory, idTest, id, data) {
+            dispatch((0, _actions.putQuestion)(idCategory, idTest, id, { name: data }));
         }
     };
 };
@@ -46310,18 +46408,42 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var QuestionList = function (_React$Component) {
     _inherits(QuestionList, _React$Component);
 
-    function QuestionList() {
+    /*({questions,addQuestion,deleteQuestion,changeQuestion, usersAnswers})=>*/
+    function QuestionList(props) {
         _classCallCheck(this, QuestionList);
 
-        return _possibleConstructorReturn(this, (QuestionList.__proto__ || Object.getPrototypeOf(QuestionList)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (QuestionList.__proto__ || Object.getPrototypeOf(QuestionList)).call(this, props));
+
+        _this.handleAdd = _this.handleAdd.bind(_this);
+        _this.handleDelete = _this.handleDelete.bind(_this);
+        _this.handleIsReady = _this.handleIsReady.bind(_this);
+        return _this;
     }
 
     _createClass(QuestionList, [{
         key: 'componentDidMount',
-        /*({questions,addQuestion,deleteQuestion,changeQuestion, usersAnswers})=>*/
         value: function componentDidMount() {
             var params = this.props.match.params;
             this.props.init(params.category, params.test, "test");
+        }
+    }, {
+        key: 'handleAdd',
+        value: function handleAdd(event) {
+            event.preventDefault();
+            var params = this.props.match.params;
+            this.props.addQuestion(params.category, params.test, this.refs.typeQuestion.value);
+        }
+    }, {
+        key: 'handleDelete',
+        value: function handleDelete(id) {
+            var params = this.props.match.params;
+            this.props.deleteQuestion(params.category, params.test, id);
+        }
+    }, {
+        key: 'handleIsReady',
+        value: function handleIsReady(id, isReady) {
+            var params = this.props.match.params;
+            this.props.changeIsReadyQuestion(params.category, params.test, id, isReady);
         }
     }, {
         key: 'render',
@@ -46343,13 +46465,34 @@ var QuestionList = function (_React$Component) {
                         'ul',
                         null,
                         this.props.questions.map(function (element, num) {
-                            return _react2.default.createElement(_item2.default, { key: num, item: element, deleteQuestion: _this2.props.deleteQuestion, changeQuestion: _this2.props.changeQuestion, isAdmin: isAdmin });
+                            return _react2.default.createElement(_item2.default, { key: num, item: element, deleteQuestion: _this2.handleDelete, changeIsReadyQuestion: _this2.handleIsReady, isAdmin: isAdmin });
                         })
                     ),
                     _react2.default.createElement('input', { className: 'default-btm', type: 'submit', value: isAdmin ? "Сохранить" : "Отправить ответы" }),
-                    isAdmin ? _react2.default.createElement('input', { className: 'default-btm', type: 'submit', value: "Добавить вопрос", onClick: function onClick(e) {
-                            e.preventDefault();_this2.props.addQuestion();
-                        } }) : undefined
+                    isAdmin ? _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement('input', { className: 'default-btm', type: 'submit', value: "Добавить вопрос", onClick: this.handleAdd }),
+                        _react2.default.createElement(
+                            'select',
+                            { ref: 'typeQuestion' },
+                            _react2.default.createElement(
+                                'option',
+                                { value: '1' },
+                                '\u0422\u0435\u043A\u0441\u0442'
+                            ),
+                            _react2.default.createElement(
+                                'option',
+                                { value: '2' },
+                                'Checkbox'
+                            ),
+                            _react2.default.createElement(
+                                'option',
+                                { value: '3' },
+                                'Radiobox'
+                            )
+                        )
+                    ) : undefined
                 ),
                 isAdmin ? usersTests : undefined
             );
@@ -46407,12 +46550,15 @@ function getAnswer(item, isAdmin) {
             }
     }
 }
-
+function fff(event, item) {
+    console.log(event.target.name);
+    console.log(item);
+}
 var QuestionItem = function QuestionItem(_ref) {
     var item = _ref.item,
         isAdmin = _ref.isAdmin,
         deleteQuestion = _ref.deleteQuestion,
-        changeQuestion = _ref.changeQuestion;
+        changeIsReadyQuestion = _ref.changeIsReadyQuestion;
 
     var adminBtm = _react2.default.createElement(
         'span',
@@ -46430,7 +46576,7 @@ var QuestionItem = function QuestionItem(_ref) {
             ' '
         ),
         _react2.default.createElement('input', { type: 'checkbox', checked: item.isReady, onChange: function onChange() {
-                changeQuestion(item.id);
+                changeIsReadyQuestion(item.id, !item.isReady);
             }, className: 'isReady' })
     );
     return _react2.default.createElement(
@@ -46444,7 +46590,9 @@ var QuestionItem = function QuestionItem(_ref) {
         ),
         _react2.default.createElement(
             'fieldset',
-            null,
+            { onChange: function onChange(e) {
+                    return fff(e, item);
+                } },
             getAnswer(item, isAdmin)
         )
     );
@@ -46723,6 +46871,265 @@ var Answer = function Answer(props) {
     );
 };
 exports.default = Answer;
+
+/***/ }),
+/* 715 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.getAll = getAll;
+exports.add = add;
+exports.del = del;
+exports.change = change;
+exports.default = rootSaga;
+
+var _effects = __webpack_require__(67);
+
+var _actions = __webpack_require__(18);
+
+var _helpers = __webpack_require__(54);
+
+var _marked = /*#__PURE__*/regeneratorRuntime.mark(getAll),
+    _marked2 = /*#__PURE__*/regeneratorRuntime.mark(add),
+    _marked3 = /*#__PURE__*/regeneratorRuntime.mark(del),
+    _marked4 = /*#__PURE__*/regeneratorRuntime.mark(change),
+    _marked5 = /*#__PURE__*/regeneratorRuntime.mark(rootSaga);
+
+var url = "/api/test/";
+
+function getAll(action) {
+    var questions;
+    return regeneratorRuntime.wrap(function getAll$(_context) {
+        while (1) {
+            switch (_context.prev = _context.next) {
+                case 0:
+                    _context.next = 2;
+                    return (0, _effects.put)((0, _actions.clearQuestions)());
+
+                case 2:
+                    _context.next = 4;
+                    return (0, _effects.call)(_helpers.getData, '' + url + action.idCategory + '/' + action.idTest);
+
+                case 4:
+                    questions = _context.sent;
+
+                    if (!questions) {
+                        _context.next = 8;
+                        break;
+                    }
+
+                    _context.next = 8;
+                    return (0, _effects.put)((0, _actions.addQuestions)(questions));
+
+                case 8:
+                case 'end':
+                    return _context.stop();
+            }
+        }
+    }, _marked, this);
+}
+function add(action) {
+    var newQuestion;
+    return regeneratorRuntime.wrap(function add$(_context2) {
+        while (1) {
+            switch (_context2.prev = _context2.next) {
+                case 0:
+                    _context2.next = 2;
+                    return (0, _effects.call)(_helpers.postData, '' + url + action.idCategory + '/' + action.idTest, action.data);
+
+                case 2:
+                    newQuestion = _context2.sent;
+
+                    if (!newQuestion) {
+                        _context2.next = 6;
+                        break;
+                    }
+
+                    _context2.next = 6;
+                    return (0, _effects.put)((0, _actions.addQuestion)(newQuestion));
+
+                case 6:
+                case 'end':
+                    return _context2.stop();
+            }
+        }
+    }, _marked2, this);
+}
+function del(action) {
+    var isDelete;
+    return regeneratorRuntime.wrap(function del$(_context3) {
+        while (1) {
+            switch (_context3.prev = _context3.next) {
+                case 0:
+                    _context3.next = 2;
+                    return (0, _effects.call)(_helpers.deleteData, '' + url + action.idCategory + '/' + action.idTest + '/' + action.idQuestion);
+
+                case 2:
+                    isDelete = _context3.sent;
+
+                    if (!isDelete) {
+                        _context3.next = 6;
+                        break;
+                    }
+
+                    _context3.next = 6;
+                    return (0, _effects.put)((0, _actions.removeQuestion)(action.idQuestion));
+
+                case 6:
+                case 'end':
+                    return _context3.stop();
+            }
+        }
+    }, _marked3, this);
+}
+function change(action) {
+    var isUpdate;
+    return regeneratorRuntime.wrap(function change$(_context4) {
+        while (1) {
+            switch (_context4.prev = _context4.next) {
+                case 0:
+                    _context4.next = 2;
+                    return (0, _effects.call)(_helpers.putData, '' + url + action.idCategory + '/' + action.idTest + '/' + action.idQuestion, action.data);
+
+                case 2:
+                    isUpdate = _context4.sent;
+
+                    if (!isUpdate) {
+                        _context4.next = 12;
+                        break;
+                    }
+
+                    if (!(action.data.isReady != undefined)) {
+                        _context4.next = 9;
+                        break;
+                    }
+
+                    _context4.next = 7;
+                    return (0, _effects.put)((0, _actions.changeIsReadyQuestion)(action.idQuestion, action.data.isReady));
+
+                case 7:
+                    _context4.next = 12;
+                    break;
+
+                case 9:
+                    if (!action.data.name) {
+                        _context4.next = 12;
+                        break;
+                    }
+
+                    _context4.next = 12;
+                    return (0, _effects.put)((0, _actions.changeNameQuestion)(action.idQuestion, action.data.name));
+
+                case 12:
+                case 'end':
+                    return _context4.stop();
+            }
+        }
+    }, _marked4, this);
+}
+
+function rootSaga() {
+    return regeneratorRuntime.wrap(function rootSaga$(_context5) {
+        while (1) {
+            switch (_context5.prev = _context5.next) {
+                case 0:
+                    _context5.next = 2;
+                    return (0, _effects.takeEvery)('GET_QUESTIONS', getAll);
+
+                case 2:
+                    _context5.next = 4;
+                    return (0, _effects.takeEvery)('POST_QUESTION', add);
+
+                case 4:
+                    _context5.next = 6;
+                    return (0, _effects.takeEvery)('DELETE_QUESTION', del);
+
+                case 6:
+                    _context5.next = 8;
+                    return (0, _effects.takeEvery)('PUT_QUESTION', change);
+
+                case 8:
+                case 'end':
+                    return _context5.stop();
+            }
+        }
+    }, _marked5, this);
+}
+
+/***/ }),
+/* 716 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.getAnswer = getAnswer;
+exports.default = rootSaga;
+
+var _effects = __webpack_require__(67);
+
+var _actions = __webpack_require__(18);
+
+var _helpers = __webpack_require__(54);
+
+var _marked = /*#__PURE__*/regeneratorRuntime.mark(getAnswer),
+    _marked2 = /*#__PURE__*/regeneratorRuntime.mark(rootSaga);
+
+var url = "/api/answer";
+
+function getAnswer(action) {
+    var answer;
+    return regeneratorRuntime.wrap(function getAnswer$(_context) {
+        while (1) {
+            switch (_context.prev = _context.next) {
+                case 0:
+                    _context.next = 2;
+                    return (0, _effects.put)((0, _actions.clearAnswers)());
+
+                case 2:
+                    console.log(url + '/' + action.stringParam);
+                    _context.next = 5;
+                    return (0, _effects.call)(_helpers.getData, url + '/' + action.stringParam);
+
+                case 5:
+                    answer = _context.sent;
+
+                    console.log(answer);
+                    if (answer) ;
+                    _context.next = 10;
+                    return (0, _effects.put)((0, _actions.addAnswers)(answer));
+
+                case 10:
+                case 'end':
+                    return _context.stop();
+            }
+        }
+    }, _marked, this);
+}
+
+function rootSaga() {
+    return regeneratorRuntime.wrap(function rootSaga$(_context2) {
+        while (1) {
+            switch (_context2.prev = _context2.next) {
+                case 0:
+                    _context2.next = 2;
+                    return (0, _effects.takeEvery)('GET_ANSWERS', getAnswer);
+
+                case 2:
+                case 'end':
+                    return _context2.stop();
+            }
+        }
+    }, _marked2, this);
+}
 
 /***/ })
 /******/ ]);

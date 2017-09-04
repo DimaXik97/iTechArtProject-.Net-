@@ -6,7 +6,10 @@ import ContainerElements from "./../ContainerElements/index.jsx"
 
 class User extends React.Component{
   componentDidMount(){
-    this.props.init(this.props.match.params.id?this.props.match.params.id:this.props.userId, "user");
+    this.props.init(this.props.match.params.id?this.props.match.params.id:this.props.userId, this.getParamsString());
+  }
+  getParamsString(){
+    return `?user=${this.props.match.params.id?this.props.match.params.id:this.props.userId}`;
   }
   render(){
     let isAdmin = window.location.pathname.indexOf("/admin/")==0;

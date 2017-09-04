@@ -31,7 +31,7 @@ namespace iTechArtProject_.Net_.Controllers
         {
             var userId = (HttpContext.Items["User"] as User).Id;
             TestWrapper.CheckCompletedTest(_db, userId, idTest, idCategory);
-            return QuestionWrapper.GetQuestions(_db, idTest, idCategory);
+            return QuestionWrapper.GetQuestions(_db, idTest, idCategory, HttpContext.Items["User"] as User);
         }
 
         //POST
@@ -40,7 +40,7 @@ namespace iTechArtProject_.Net_.Controllers
         public IActionResult Post(int idCategory,int idTest, [FromBody]Question question)
         {
             var newTest = QuestionWrapper.NewQuestion(_db, idCategory, idTest, question.TypeQuestion, question);
-            return CreatedAtRoute("Test", new { id=newTest.SortOrder, name = newTest.Name, isReady= newTest.IsReady, });
+            return CreatedAtRoute("Test", new { id=newTest.SortOrder, type = newTest.TypeQuestion, question = newTest.Name, isReady= newTest.IsReady, answers = OptionWrapper.OptionsToFormat(newTest.Options, newTest.TypeQuestion) });
         }
 
         //PUT

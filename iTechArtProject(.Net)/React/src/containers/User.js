@@ -3,10 +3,10 @@ import {getUser, getStatistics,getAnswers} from '../actions';
 
 import User from '../components/Profile/index.jsx';
 const mapDispatchToProps = dispatch => ({
-    init:(id, param)=>{
+    init:(id, stringParam)=>{
         dispatch(getUser(id));
         dispatch(getStatistics(id));
-        dispatch(getAnswers(param, id))
+        dispatch(getAnswers(stringParam))
     }
 })
 

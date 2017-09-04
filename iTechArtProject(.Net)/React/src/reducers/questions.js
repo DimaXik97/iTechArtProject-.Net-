@@ -30,26 +30,35 @@
 ]*/
 const questions = (state = [], action) => {
     switch (action.type) {
-    case 'INIT_QUESTIONS':{
-        return action.questions
+    case 'CLEAR_QUESTIONS':{
+        return []
+    }
+    case 'ADD_QUESTIONS':{
+        return [
+            ...state,...action.questions
+        ];
     }
     case 'ADD_QUESTION':{
         return [
-            ...state,
-            {
-                id: action.id,
-                type: action.typeQuestions,
-                isReady: action.isReady,
-                question: action.question,
-                answers: action.answers
-            }
+            ...state, action.question
         ];
     }
-    case "DELETE_QUESTION":{
-        return state.filter(element => element.id !== action.id);
+    case 'REMOVE_QUESTION':{
+        return state.filter(element =>  element.id != action.id);
     }
-    case "CHANGE_QUESTION":{
-        return state.map(element => {if(element.id==action.id) {element.isReady=(!element.isReady)}; return element})
+    case 'CHANGE_NAME_QUESTION':{
+        return state.map(element => {
+            if(element.id==action.idQuestion) 
+                element.name=action.name;
+            return element
+        })
+    }
+    case 'CHANGE_ISREADY_QUESTION':{
+        return state.map(element => {
+            if(element.id==action.idQuestion) 
+                element.isReady=action.isReady;
+            return element
+        })
     }
     default:
       return state

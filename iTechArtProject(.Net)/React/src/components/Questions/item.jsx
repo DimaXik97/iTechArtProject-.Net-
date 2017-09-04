@@ -21,15 +21,18 @@ function getAnswer(item, isAdmin){
         }
     }
 }
-
-const QuestionItem = ({ item, isAdmin, deleteQuestion, changeQuestion }) => {
-    let adminBtm=<span><span className="edit"> </span><span className="delete" onClick={()=>{deleteQuestion(item.id)}}> </span><input type="checkbox" checked={item.isReady} onChange={()=>{changeQuestion(item.id)}} className="isReady"/></span>;
+function fff(event,item){
+    console.log(event.target.name);
+    console.log(item);
+}
+const QuestionItem = ({ item, isAdmin, deleteQuestion, changeIsReadyQuestion }) => {
+    let adminBtm=<span><span className="edit"> </span><span className="delete" onClick={()=>{deleteQuestion(item.id)}}> </span><input type="checkbox" checked={item.isReady} onChange={()=>{changeIsReadyQuestion(item.id, !item.isReady)}} className="isReady"/></span>;
     return (
         <li className="question">
             <h2 className="title">
                 {item.question}{isAdmin?adminBtm:undefined}
             </h2>
-            <fieldset>
+            <fieldset onChange={(e)=>fff(e, item)}>
                 {getAnswer(item, isAdmin)}
             </fieldset>
         </li>
