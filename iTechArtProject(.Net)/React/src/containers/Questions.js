@@ -1,16 +1,17 @@
 import { connect } from 'react-redux'
-import {getAllQuestions,postQuestion, deleteQuestion, putQuestion} from '../actions';
+import {getAllQuestions, postQuestion, deleteQuestion, putQuestion, getAnswers} from '../actions';
 
 import Questions from '../components/Questions/index.jsx';
 
 const mapStateToProps = state => ({
+    isAdmin: state.app.user.role=="admin",
     questions: state.questions,
     usersAnswers: state.answers
 })
 const mapDispatchToProps = dispatch => ({
-    init:(idCategory, idTest, param)=>{
-        dispatch(getAllQuestions(idCategory,idTest))
-        /*dispatch(getAnswers(param, idTest))*/
+    init:(idCategory, idTest, stringParam, isAdmin)=>{
+        dispatch(getAllQuestions(idCategory,idTest));
+        dispatch(getAnswers(stringParam, isAdmin))
     },
     addQuestion: (idCategory, idTest, typeQuestion)=>{
         dispatch(postQuestion(idCategory, idTest, {typeQuestion}))

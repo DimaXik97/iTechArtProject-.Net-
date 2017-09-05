@@ -1,4 +1,6 @@
 import axios from "axios";
+import {NotificationManager} from 'react-notifications';
+
 export const sort=(items,param)=>{
   let paramA,paramB;
   return items.sort(function (a, b) {
@@ -23,6 +25,7 @@ export const getCookie=(name)=>{
   var parts = value.split("; " + name + "=");
   if (parts.length == 2) return parts.pop().split(";").shift();
 }
+
 export const getData=(url)=>{
   return axios.get(url)
       .then(res => {
@@ -30,8 +33,8 @@ export const getData=(url)=>{
               return res.data;
           return undefined;
       })
-      .catch(err => {
-            console.log(err);
+      .catch(error => {
+            NotificationManager.warning(error.response.data.message);
             return undefined;
       });
 }
@@ -42,8 +45,8 @@ export const deleteData=(url)=>{
               return true;
           return false
       })
-      .catch(err => {
-              console.log(err);
+      .catch(error => {
+              NotificationManager.warning(error.response.data.message);
               return false;
       });
 }
@@ -54,8 +57,8 @@ export const postData=(url, data)=>{
               return res.data;
           return undefined;
       })
-      .catch(err => {
-          console.log(err);
+      .catch(error => {
+          NotificationManager.warning(error.response.data.message);
           return undefined;
       });
 }
@@ -66,8 +69,9 @@ export const putData=(url, data)=>{
               return true;
           return false;
       })
-      .catch(err => {
-          console.log(err);
+      .catch(error => {
+          console.log(error.response);
+          NotificationManager.warning(error.response.data.message);
           return false;
       });
 }

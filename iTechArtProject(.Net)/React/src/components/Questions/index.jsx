@@ -12,7 +12,10 @@ class QuestionList extends React.Component{/*({questions,addQuestion,deleteQuest
     }
     componentDidMount(){
         let params=this.props.match.params;
-        this.props.init(params.category,params.test,"test");
+        this.props.init(params.category,params.test, this.getParams(),this.props.isAdmin);
+    }
+    getParams(){
+        return `?category=${this.props.match.params.category}&test=${this.props.match.params.test}`
     }
     handleAdd(event){
         event.preventDefault();
@@ -28,21 +31,20 @@ class QuestionList extends React.Component{/*({questions,addQuestion,deleteQuest
         this.props.changeIsReadyQuestion(params.category,params.test, id, isReady)
     }
     render() {
-        let isAdmin = window.location.pathname.indexOf("/admin/")==0;
-        let usersTests=null/*(<div>
+        let usersTests=(<div>
             <h2 className="title">Ответы пользователей:</h2>
             <ContainerElements url={"/admin/question"} data={this.props.usersAnswers.map((element)=>{return {id:element.id, text: `${element.user.name} ${element.user.surName} ${element.date}`}})}/>
-        </div>)*/;
+        </div>);
         return (
             <main>
                 <form>
                     <ul>
                         {this.props.questions.map((element, num)=>{
-                            return <QuestionItem key={num} item={element} deleteQuestion={this.handleDelete} changeIsReadyQuestion={this.handleIsReady} isAdmin={isAdmin}/> 
+                            return <QuestionItem key={num} item={element} deleteQuestion={this.handleDelete} changeIsReadyQuestion={this.handleIsReady} isAdmin={this.props.isAdmin}/> 
                         })}
                     </ul>
-                    <input className="default-btm" type="submit" value={isAdmin?"Сохранить":"Отправить ответы"}/>
-                    {isAdmin?<div>
+                    <input className="default-btm" type="submit" value={this.props.isAdmin?"Сохранить":"Отправить ответы"}/>
+                    {this.props.isAdmin?<div>
                             <input className="default-btm" type="submit" value={"Добавить вопрос"} onClick={this.handleAdd}/>
                             <select ref="typeQuestion">
                                 <option value="1">Текст</option>
@@ -51,7 +53,7 @@ class QuestionList extends React.Component{/*({questions,addQuestion,deleteQuest
                             </select>
                         </div>:undefined}
                 </form>
-            {isAdmin?usersTests:undefined} 
+            {this.props.isAdmin?usersTests:undefined} 
             </main>
         );
     }

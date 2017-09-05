@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import { Router, Switch, Route, Redirect } from 'react-router-dom'
+import {NotificationContainer} from 'react-notifications';
+
 
 import history from "./../../history.js";
 
@@ -18,7 +20,9 @@ import Result from "./../../containers/Result.js";
 
 class App extends React.Component{
     render(){
-        return (<Router history={history}>
+        return (
+            <div>
+            <Router history={history}>
             <Switch>
                 <Route path="/signIn" component={SignIn}/>
                 <Route path="/signUp" component={SignUp}/>
@@ -51,8 +55,10 @@ class App extends React.Component{
                         )}
                     />
                 </Main>
-            </Switch> 
-        </Router>)
+            </Switch>
+</Router>
+<NotificationContainer/>
+</div>)
     }
 };
 

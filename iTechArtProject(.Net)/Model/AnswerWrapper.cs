@@ -50,7 +50,7 @@ namespace iTechArtProject_.Net_.Model
                 test = new
                 {
                     name = s.Test.Name,
-                    categoty = s.Test.Category.Name
+                    category = s.Test.Category.Name
                 }
             }).ToList<dynamic>();
         }
