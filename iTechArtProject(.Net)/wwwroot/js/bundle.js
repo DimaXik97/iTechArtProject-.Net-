@@ -48655,7 +48655,6 @@ var QuestionList = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (QuestionList.__proto__ || Object.getPrototypeOf(QuestionList)).call(this, props));
 
-        _this.list = [];
         _this.handleAdd = _this.handleAdd.bind(_this);
         _this.handleDelete = _this.handleDelete.bind(_this);
         _this.handleIsReady = _this.handleIsReady.bind(_this);
@@ -48669,17 +48668,13 @@ var QuestionList = function (_React$Component) {
             this.props.init(params.category, params.test, this.getParams(), this.props.isAdmin);
         }
     }, {
-        key: 'fff',
-        value: function fff(event) {
-            var list = [];
-            return function (event) {
-                var value = event.target.value;
-                var checked = event.target.type != "text" ? event.target.checked : null;
-                var name = event.target.name;
-                var obj = { type: event.target.type, name: name, value: value, checked: checked };
-                list.push(obj);
-                console.log(list);
-            };
+        key: 'handleChange',
+        value: function handleChange(event) {
+            var value = event.target.value;
+            var checked = event.target.type != "text" ? event.target.checked : null;
+            var name = event.target.name;
+            var obj = { type: event.target.type, name: name, value: value, checked: checked };
+            console.log(obj);
         }
     }, {
         key: 'getParams',
@@ -48732,7 +48727,7 @@ var QuestionList = function (_React$Component) {
                         'ul',
                         null,
                         this.props.questions.map(function (element, num) {
-                            return _react2.default.createElement(_item2.default, { key: num, item: element, deleteQuestion: _this2.handleDelete, changeIsReadyQuestion: _this2.handleIsReady, isAdmin: _this2.props.isAdmin, handleChange: _this2.fff });
+                            return _react2.default.createElement(_item2.default, { key: num, item: element, deleteQuestion: _this2.handleDelete, changeIsReadyQuestion: _this2.handleIsReady, isAdmin: _this2.props.isAdmin, handleChange: _this2.handleChange });
                         })
                     ),
                     _react2.default.createElement('input', { className: 'default-btm', type: 'submit', value: this.props.isAdmin ? "Сохранить" : "Отправить ответы" }),
