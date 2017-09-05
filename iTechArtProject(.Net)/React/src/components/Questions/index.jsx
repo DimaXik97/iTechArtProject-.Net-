@@ -6,6 +6,7 @@ import ContainerElements from "./../ContainerElements/index.jsx";
 class QuestionList extends React.Component{/*({questions,addQuestion,deleteQuestion,changeQuestion, usersAnswers})=>*/
     constructor(props) {
         super(props);
+        this.list=[];
         this.handleAdd = this.handleAdd.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleIsReady = this.handleIsReady.bind(this);
@@ -14,6 +15,18 @@ class QuestionList extends React.Component{/*({questions,addQuestion,deleteQuest
         let params=this.props.match.params;
         this.props.init(params.category,params.test, this.getParams(),this.props.isAdmin);
     }
+    fff(event){
+        let list=[];
+        return (event)=>{
+            let value = event.target.value;
+            let checked= event.target.type!="text"?event.target.checked:null;
+            let name= event.target.name;
+            let obj={type: event.target.type,name: name, value: value, checked: checked}
+            list.push(obj);
+            console.log(list);
+        }
+    }
+    
     getParams(){
         return `?category=${this.props.match.params.category}&test=${this.props.match.params.test}`
     }
@@ -40,7 +53,7 @@ class QuestionList extends React.Component{/*({questions,addQuestion,deleteQuest
                 <form>
                     <ul>
                         {this.props.questions.map((element, num)=>{
-                            return <QuestionItem key={num} item={element} deleteQuestion={this.handleDelete} changeIsReadyQuestion={this.handleIsReady} isAdmin={this.props.isAdmin}/> 
+                            return <QuestionItem key={num} item={element} deleteQuestion={this.handleDelete} changeIsReadyQuestion={this.handleIsReady} isAdmin={this.props.isAdmin} handleChange={this.fff}/> 
                         })}
                     </ul>
                     <input className="default-btm" type="submit" value={this.props.isAdmin?"Сохранить":"Отправить ответы"}/>

@@ -1,8 +1,11 @@
-export const getResult= (id)=>({
-    type: 'GET_RESULT',
+export const getResults= (id)=>({
+    type: 'GET_RESULTS',
     id: id
 })
-export const initResult =(result)=>({
-    type: 'INIT_RESULT',
-    result: result
+export const addResults =(results)=>({
+    type: 'ADD_RESULTS',
+    results: results
+})
+export const clearResults =()=>({
+    type: 'CLEAR_RESULT'
 })

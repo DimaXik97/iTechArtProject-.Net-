@@ -22,6 +22,10 @@ namespace iTechArtProject_.Net_.Model
         {
             return tests.Select(s => new { id = s.SortOrder, name = s.Name, date = s.CreationDate, isReady = s.IsReady }).ToList<dynamic>();
         }
+        public static dynamic TestToFormat(Test test)
+        {
+            return new { id = test.SortOrder, name = test.Name, isReady = test.IsReady, date = test.CreationDate };
+        }
         public static Test GetTestByParams(APIContext db, int testId, int categoryId)
         {
             var test = db.Tests.Include(s => s.Category).Include(s => s.Questions).SingleOrDefault(s => s.Category.Id == categoryId && s.SortOrder == testId);

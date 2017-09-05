@@ -15,10 +15,17 @@ namespace iTechArtProject_.Net_.Model
             var category = currentUser.Role.Name == "user" ? db.Categories.Where(s => s.IsReady) : db.Categories;
             return CatigoriesToFormat(category);
         }
+
         private static IEnumerable CatigoriesToFormat(IQueryable<Category> category)
         {
             return category.Select(s => new { id = s.Id, name = s.Name, date=s.CreationDate, isReady=s.IsReady}).ToList<dynamic>();
         }
+
+        public static dynamic CatigoryToFormat(Category category)
+        {
+            return new { id = category.Id, name = category.Name, isReady = category.IsReady, date = category.CreationDate };
+        }
+
         public static Category NewCategory(APIContext db, Category category)
         {
             if (category == null) throw new Exception("Error object request");

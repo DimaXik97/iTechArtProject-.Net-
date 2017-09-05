@@ -7,6 +7,7 @@ class AnswerList extends React.Component {
         this.props.init(this.props.match.params.id)
     }
     render(){
+        console.log(this.props.result);
         return (
         <main>
             <ul>

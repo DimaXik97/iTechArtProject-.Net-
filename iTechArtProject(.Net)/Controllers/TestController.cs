@@ -35,7 +35,7 @@ namespace iTechArtProject_.Net_.Controllers
         public IActionResult Post(int idCategory, [FromBody]Test tets)
         {
             var newTest = TestWrapper.AddTest(_db, idCategory, tets);
-            return CreatedAtRoute("Test", new { id=newTest.SortOrder ,name = newTest.Name, isReady = newTest.IsReady, date = newTest.CreationDate });
+            return CreatedAtRoute("Test", TestWrapper.TestToFormat(newTest));
         }
 
         //PUT

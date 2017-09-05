@@ -6,6 +6,7 @@ import about from './about'
 import test from './test'
 import question from './question';
 import answer from './answer';
+import result from './result';
 // let getData=(url)=>{
 // return axios.get(url)
 //     .then(res => {
@@ -103,5 +104,6 @@ export default function* rootSaga() {
   yield fork(users),
   yield fork(test),
   yield fork(question),
-  yield fork(answer)
+  yield fork(answer),
+  yield fork(result)
 }

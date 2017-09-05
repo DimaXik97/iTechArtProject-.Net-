@@ -34,45 +34,25 @@ namespace iTechArtProject_.Net_.Controllers
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
-            try
-            {
-                return Ok(UserWrapper.GetUser(_db, id, HttpContext.Items["User"] as User));
-            }
-            catch(Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            return Ok(UserWrapper.GetUser(_db, id, HttpContext.Items["User"] as User));
         }
         // POST: api/User
         [HttpPost]
         public IActionResult Post([FromBody]User user)
         {
-            try
-            {
-                var role = RoleWrapper.GetDefaulRole(_db);
-                var newUser = UserWrapper.AddUser(_db, user, role);
-                var token = TokenWrapper.AddToken(_db, newUser);
-                UserWrapper.SetCookies(Response.Cookies, newUser, token);
-                return CreatedAtRoute("Get", new { id = newUser.Id }, new { id=newUser.Id, name=newUser.Name, surName=newUser.SurName, email=newUser.Email});
-            }
-            catch(Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+
+            var role = RoleWrapper.GetDefaulRole(_db);
+            var newUser = UserWrapper.AddUser(_db, user, role);
+            var token = TokenWrapper.AddToken(_db, newUser);
+            UserWrapper.SetCookies(Response.Cookies, newUser, token);
+            return CreatedAtRoute("Get", new { id = newUser.Id }, new { id=newUser.Id, name=newUser.Name, surName=newUser.SurName, email=newUser.Email});
         }
         [HttpPut]
         public IActionResult GetToken([FromBody]User user)
         {
-            try
-            {
-                var token = TokenWrapper.GetToken(_db, user.Email, user.Password);
-                UserWrapper.SetCookies(Response.Cookies, token.User, token.Name);
-                return Ok();
-            }
-            catch(Exception e)
-            {
-                return BadRequest(new { message=e.Message});
-            }
+            var token = TokenWrapper.GetToken(_db, user.Email, user.Password);
+            UserWrapper.SetCookies(Response.Cookies, token.User, token.Name);
+            return Ok();
         }
 
         // PUT: api/User/id
@@ -80,15 +60,9 @@ namespace iTechArtProject_.Net_.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]User user)
         {
-            try
-            {
-                UserWrapper.UpdateUser(_db, id, user, HttpContext.Items["User"] as User);
-                return Ok();
-            }
-            catch(Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
+            UserWrapper.UpdateUser(_db, id, user, HttpContext.Items["User"] as User);
+            return Ok();
+            
         }
 
         // DELETE: api/ApiWithActions/5

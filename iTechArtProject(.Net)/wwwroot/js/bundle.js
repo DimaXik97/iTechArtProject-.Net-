@@ -41974,14 +41974,22 @@ exports.default = users;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 var result = function result() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var action = arguments[1];
 
     switch (action.type) {
-        case 'INIT_RESULT':
+        case 'ADD_RESULTS':
             {
-                return action.result;
+                console.log(action);
+                return [].concat(_toConsumableArray(state), _toConsumableArray(action.results));
+            }
+        case 'CLEAR_RESULT':
+            {
+                return [];
             }
     }
     return state;
@@ -42072,6 +42080,10 @@ var _question2 = _interopRequireDefault(_question);
 var _answer = __webpack_require__(685);
 
 var _answer2 = _interopRequireDefault(_answer);
+
+var _result = __webpack_require__(737);
+
+var _result2 = _interopRequireDefault(_result);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -42200,6 +42212,10 @@ function rootSaga() {
           return (0, _effects.fork)(_answer2.default);
 
         case 14:
+          _context.next = 16;
+          return (0, _effects.fork)(_result2.default);
+
+        case 16:
         case 'end':
           return _context.stop();
       }
@@ -42286,7 +42302,7 @@ function del(action) {
                     }
 
                     _context2.next = 6;
-                    return (0, _effects.put)((0, _actions.removeCategoty)(action.id));
+                    return (0, _effects.put)((0, _actions.removeCategory)(action.id));
 
                 case 6:
                 case 'end':
@@ -42459,7 +42475,7 @@ var сhangeIsReadyCategory = exports.сhangeIsReadyCategory = function сhangeIs
         isReady: isReady
     };
 };
-var romoveCategoty = exports.romoveCategoty = function romoveCategoty(id) {
+var removeCategory = exports.removeCategory = function removeCategory(id) {
     return { //+
         type: 'REMOVE_CATEGORY',
         id: id
@@ -42833,16 +42849,21 @@ var addVacancies = exports.addVacancies = function addVacancies(vacancies) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var getResult = exports.getResult = function getResult(id) {
+var getResults = exports.getResults = function getResults(id) {
     return {
-        type: 'GET_RESULT',
+        type: 'GET_RESULTS',
         id: id
     };
 };
-var initResult = exports.initResult = function initResult(result) {
+var addResults = exports.addResults = function addResults(results) {
     return {
-        type: 'INIT_RESULT',
-        result: result
+        type: 'ADD_RESULTS',
+        results: results
+    };
+};
+var clearResults = exports.clearResults = function clearResults() {
+    return {
+        type: 'CLEAR_RESULT'
     };
 };
 
@@ -48634,6 +48655,7 @@ var QuestionList = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (QuestionList.__proto__ || Object.getPrototypeOf(QuestionList)).call(this, props));
 
+        _this.list = [];
         _this.handleAdd = _this.handleAdd.bind(_this);
         _this.handleDelete = _this.handleDelete.bind(_this);
         _this.handleIsReady = _this.handleIsReady.bind(_this);
@@ -48645,6 +48667,19 @@ var QuestionList = function (_React$Component) {
         value: function componentDidMount() {
             var params = this.props.match.params;
             this.props.init(params.category, params.test, this.getParams(), this.props.isAdmin);
+        }
+    }, {
+        key: 'fff',
+        value: function fff(event) {
+            var list = [];
+            return function (event) {
+                var value = event.target.value;
+                var checked = event.target.type != "text" ? event.target.checked : null;
+                var name = event.target.name;
+                var obj = { type: event.target.type, name: name, value: value, checked: checked };
+                list.push(obj);
+                console.log(list);
+            };
         }
     }, {
         key: 'getParams',
@@ -48697,7 +48732,7 @@ var QuestionList = function (_React$Component) {
                         'ul',
                         null,
                         this.props.questions.map(function (element, num) {
-                            return _react2.default.createElement(_item2.default, { key: num, item: element, deleteQuestion: _this2.handleDelete, changeIsReadyQuestion: _this2.handleIsReady, isAdmin: _this2.props.isAdmin });
+                            return _react2.default.createElement(_item2.default, { key: num, item: element, deleteQuestion: _this2.handleDelete, changeIsReadyQuestion: _this2.handleIsReady, isAdmin: _this2.props.isAdmin, handleChange: _this2.fff });
                         })
                     ),
                     _react2.default.createElement('input', { className: 'default-btm', type: 'submit', value: this.props.isAdmin ? "Сохранить" : "Отправить ответы" }),
@@ -48762,35 +48797,33 @@ var _select2 = _interopRequireDefault(_select);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function getAnswer(item, isAdmin) {
+function getAnswer(item, isAdmin, handleChange) {
     switch (item.type) {
         case 1:
             {
-                return _react2.default.createElement(_text2.default, null);
+                return _react2.default.createElement(_text2.default, { onChange: handleChange, id: item.id });
             }
         case 2:
             {
                 return item.answers.map(function (element, num) {
-                    return _react2.default.createElement(_select2.default, { type: "checkbox", key: num, id: item.id, answer: element, isAdmin: isAdmin });
+                    return _react2.default.createElement(_select2.default, { onClick: handleChange, type: "checkbox", key: num, id: item.id, answer: element, isAdmin: isAdmin });
                 });
             }
         case 3:
             {
                 return item.answers.map(function (element, num) {
-                    return _react2.default.createElement(_select2.default, { type: "radio", key: num, id: item.id, answer: element, isAdmin: isAdmin });
+                    return _react2.default.createElement(_select2.default, { onClick: handleChange, type: "radio", key: num, id: item.id, answer: element, isAdmin: isAdmin });
                 });
             }
     }
 }
-function fff(event, item) {
-    console.log(event.target.name);
-    console.log(item);
-}
+
 var QuestionItem = function QuestionItem(_ref) {
     var item = _ref.item,
         isAdmin = _ref.isAdmin,
         deleteQuestion = _ref.deleteQuestion,
-        changeIsReadyQuestion = _ref.changeIsReadyQuestion;
+        changeIsReadyQuestion = _ref.changeIsReadyQuestion,
+        handleChange = _ref.handleChange;
 
     var adminBtm = _react2.default.createElement(
         'span',
@@ -48822,10 +48855,8 @@ var QuestionItem = function QuestionItem(_ref) {
         ),
         _react2.default.createElement(
             'fieldset',
-            { onChange: function onChange(e) {
-                    return fff(e, item);
-                } },
-            getAnswer(item, isAdmin)
+            null,
+            getAnswer(item, isAdmin, handleChange)
         )
     );
 };
@@ -48848,8 +48879,8 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Text = function Text() {
-  return _react2.default.createElement("textarea", { name: "text-question", cols: "40", rows: "3" });
+var Text = function Text(props) {
+  return _react2.default.createElement("textarea", { onChange: props.onChange, name: props.id, cols: "40", rows: "3" });
 };
 exports.default = Text;
 
@@ -48884,7 +48915,7 @@ var Select = function Select(props) {
   return _react2.default.createElement(
     "p",
     null,
-    _react2.default.createElement("input", { name: props.type + "-" + props.id, type: props.type, value: props.answer.value }),
+    _react2.default.createElement("input", { name: props.id, type: props.type, value: props.answer.value, onClick: props.onClick }),
     " ",
     props.answer.title,
     " ",
@@ -48917,7 +48948,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
         init: function init(id) {
-            dispatch((0, _actions.getResult)(id));
+            dispatch((0, _actions.getResults)(id));
         }
     };
 };
@@ -48976,6 +49007,7 @@ var AnswerList = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            console.log(this.props.result);
             return _react2.default.createElement(
                 'main',
                 null,
@@ -49091,6 +49123,7 @@ function getClass(atrr) {
 }
 
 var Answer = function Answer(props) {
+    console.log(props);
     return _react2.default.createElement(
         "li",
         { className: "question" },
@@ -49103,6 +49136,78 @@ var Answer = function Answer(props) {
     );
 };
 exports.default = Answer;
+
+/***/ }),
+/* 737 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.get = get;
+exports.default = rootSaga;
+
+var _effects = __webpack_require__(51);
+
+var _actions = __webpack_require__(17);
+
+var _helpers = __webpack_require__(47);
+
+var _marked = /*#__PURE__*/regeneratorRuntime.mark(get),
+    _marked2 = /*#__PURE__*/regeneratorRuntime.mark(rootSaga);
+
+var url = "/api/answer";
+
+function get(action) {
+    var answer;
+    return regeneratorRuntime.wrap(function get$(_context) {
+        while (1) {
+            switch (_context.prev = _context.next) {
+                case 0:
+                    _context.next = 2;
+                    return (0, _effects.put)((0, _actions.clearResults)());
+
+                case 2:
+                    _context.next = 4;
+                    return (0, _effects.call)(_helpers.getData, url + '/' + action.id);
+
+                case 4:
+                    answer = _context.sent;
+
+                    if (!answer) {
+                        _context.next = 8;
+                        break;
+                    }
+
+                    _context.next = 8;
+                    return (0, _effects.put)((0, _actions.addResults)(answer));
+
+                case 8:
+                case 'end':
+                    return _context.stop();
+            }
+        }
+    }, _marked, this);
+}
+
+function rootSaga() {
+    return regeneratorRuntime.wrap(function rootSaga$(_context2) {
+        while (1) {
+            switch (_context2.prev = _context2.next) {
+                case 0:
+                    _context2.next = 2;
+                    return (0, _effects.takeEvery)('GET_RESULTS', get);
+
+                case 2:
+                case 'end':
+                    return _context2.stop();
+            }
+        }
+    }, _marked2, this);
+}
 
 /***/ })
 /******/ ]);

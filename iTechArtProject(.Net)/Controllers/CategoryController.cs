@@ -37,7 +37,7 @@ namespace iTechArtProject_.Net_.Controllers
         public IActionResult Post([FromBody]Category category)
         {
             var newCategory=CategoryWrapper.NewCategory(_db, category);
-            return CreatedAtRoute("Category", new { id=newCategory.Id ,name = newCategory.Name, isReady = newCategory.IsReady, date = newCategory.CreationDate });
+            return CreatedAtRoute("Category", CategoryWrapper.CatigoryToFormat(newCategory));
         }
 
         //PUT

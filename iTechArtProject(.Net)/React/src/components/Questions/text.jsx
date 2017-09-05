@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Text = ()=> {
+const Text = (props)=> {
   return (
-    <textarea name="text-question" cols="40" rows="3"></textarea>
+    <textarea onChange={props.onChange} name={props.id} cols="40" rows="3"></textarea>
   );
 };
 export default Text;

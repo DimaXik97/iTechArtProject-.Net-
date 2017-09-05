@@ -1,10 +1,10 @@
 import { connect } from 'react-redux'
-import {getResult} from '../actions';
+import {getResults} from '../actions';
 
 import Result from '../components/Result/index.jsx';
 const mapDispatchToProps = dispatch => ({
     init:(id)=>{
-        dispatch(getResult(id));
+        dispatch(getResults(id));
     }
 })
 

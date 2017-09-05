@@ -38,6 +38,7 @@ function getClass(atrr){
 }
 
 const Answer = (props)=> {
+    console.log(props);
   return (<li className="question">
             <h2 className="title">
                 {props.answer.question}

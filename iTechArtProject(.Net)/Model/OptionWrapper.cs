@@ -24,7 +24,7 @@ namespace iTechArtProject_.Net_.Model
                     {
                         for (int i = 1; i <= 4; i++)
                         {
-                            newOption.Add(new Option { Title = "NewItemRb" + i, Value = "value" + 1, IsCorrect = false, SortOrder = i, Question = question });
+                            newOption.Add(new Option { Title = "NewItemRb" + i, Value = "value" + i, IsCorrect = false, SortOrder = i, Question = question });
                         }
                         break;
                     };

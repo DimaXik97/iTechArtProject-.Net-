@@ -1,7 +1,11 @@
 const result = (state = [], action) => {
     switch(action.type){
-        case 'INIT_RESULT':{
-            return action.result
+        case 'ADD_RESULTS':{
+            console.log(action);
+            return [...state,...action.results]
+        }
+        case 'CLEAR_RESULT':{
+            return []
         }
     }
     return state;

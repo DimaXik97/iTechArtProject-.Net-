@@ -28,6 +28,10 @@ namespace iTechArtProject_.Net_.Model
                 answers = OptionWrapper.OptionsToFormat(s.Options, s.TypeQuestion)
             }).ToList();
         }
+        public static dynamic QuestionToFormat(Question question)
+        {
+            return new {id = question.SortOrder, type = question.TypeQuestion, question = question.Name, isReady = question.IsReady, answers = OptionWrapper.OptionsToFormat(question.Options, question.TypeQuestion)};
+        }
         public static Question NewQuestion(APIContext db, int idCategory, int idTest, TypeQuestion typeQuestion, Question question)
         {
             var test=TestWrapper.GetTestByParams(db, idTest, idCategory);

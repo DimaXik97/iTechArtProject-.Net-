@@ -40,7 +40,7 @@ namespace iTechArtProject_.Net_.Controllers
         public IActionResult Post(int idCategory,int idTest, [FromBody]Question question)
         {
             var newTest = QuestionWrapper.NewQuestion(_db, idCategory, idTest, question.TypeQuestion, question);
-            return CreatedAtRoute("Test", new { id=newTest.SortOrder, type = newTest.TypeQuestion, question = newTest.Name, isReady= newTest.IsReady, answers = OptionWrapper.OptionsToFormat(newTest.Options, newTest.TypeQuestion) });
+            return CreatedAtRoute("Test", QuestionWrapper.QuestionToFormat(newTest));
         }
 
         //PUT

@@ -33,7 +33,7 @@ export const сhangeIsReadyCategory= (id, isReady)=>({
     id: id,
     isReady: isReady
 })
-export const romoveCategoty= (id)=>({//+
+export const removeCategory= (id)=>({//+
     type: 'REMOVE_CATEGORY',
     id: id
 })

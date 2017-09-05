@@ -1,5 +1,5 @@
 import { put, takeEvery,call } from 'redux-saga/effects';
-import {getAllCatigories,addCategories,clearCategories, removeCategoty, addCategoty, сhangeIsReadyCategory, сhangeNameCategory} from '../actions';
+import {getAllCatigories,addCategories,clearCategories, removeCategory, addCategoty, сhangeIsReadyCategory, сhangeNameCategory} from '../actions';
 import { getData , postData, putData, deleteData } from './../helpers';
 let url="/api/Test";
 
@@ -13,7 +13,7 @@ export function* getAll() {
 export function* del(action) {
     const isDelete=yield call(deleteData,`${url}/${action.id}`);
     if(isDelete){
-        yield put(removeCategoty(action.id));
+        yield put(removeCategory(action.id));
     }
 }
 export function* add() {
